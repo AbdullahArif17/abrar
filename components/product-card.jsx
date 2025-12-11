@@ -1,6 +1,6 @@
-import { Button } from "@/app/components/ui/button"
-import { Card, CardContent } from "@/app/components/ui/card"
-import { Badge } from "@/app/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
 import { Star } from "lucide-react"
 
 export function ProductCard({ name, price, originalPrice, rating, image, badge, discount, colors, isNew = false }) {
