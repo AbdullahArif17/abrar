@@ -22,8 +22,8 @@ export default async function ProductPage({ params }: { params: { slug: string }
   if (!product) return notFound()
 
   return (
-    <div className="container mx-auto px-4 py-12">
-      <div className="grid md:grid-cols-2 gap-12">
+    <div className="container mx-auto px-4 py-12 md:py-20">
+      <div className="grid md:grid-cols-2 gap-12 lg:gap-20">
         {/* Gallery */}
         <div className="space-y-4">
            {product.images && product.images.length > 0 && (
@@ -39,7 +39,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
            )}
            <div className="grid grid-cols-4 gap-4">
               {product.images && product.images.map((img: any, i: number) => (
-                 <div key={i} className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden cursor-pointer hover:ring-2 ring-green-500">
+                 <div key={i} className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden cursor-pointer hover:opacity-80 transition-opacity">
                     <Image src={urlFor(img).url()} alt="" fill className="object-cover" />
                  </div>
               ))}
@@ -47,23 +47,22 @@ export default async function ProductPage({ params }: { params: { slug: string }
         </div>
 
         {/* Details */}
-        <div>
-           <span className="text-green-600 font-bold uppercase tracking-wider">{product.category}</span>
-           <h1 className="text-4xl font-bold mt-2 mb-4">{product.name}</h1>
-           <p className="text-3xl font-bold mb-6">PKR {product.price.toLocaleString()}</p>
+        <div className="flex flex-col justify-center">
+           <span className="text-gray-400 text-sm font-medium uppercase tracking-wider mb-2">{product.category}</span>
+           <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">{product.name}</h1>
+           <p className="text-2xl text-gray-900 font-medium mb-8">PKR {product.price.toLocaleString()}</p>
            
-           <div className="prose prose-gray mb-8">
+           <div className="prose prose-gray mb-10 text-gray-600">
               <p>{product.description}</p>
            </div>
 
-           <AddToCartButton product={product} /> 
+           <div className="mb-8">
+            <AddToCartButton product={product} /> 
+           </div>
            
-           <div className="mt-8 border-t pt-8 space-y-4 text-sm text-gray-500">
-              <div className="flex gap-4">
-                 <span>Free Delivery</span>
-                 <span>1 Year Warranty</span>
-                 <span>7 Days Return</span>
-              </div>
+           <div className="border-t border-gray-100 pt-8 space-y-3 text-sm text-gray-500">
+              <p>Free Standard Shipping</p>
+              <p>Returns accepted within 14 days</p>
            </div>
         </div>
       </div>
