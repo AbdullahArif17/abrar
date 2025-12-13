@@ -1,58 +1,67 @@
-export const product = {
+import { defineField, defineType } from 'sanity';
+
+export const product = defineType({
   name: 'product',
   title: 'Product',
   type: 'document',
   fields: [
-    {
-      name: 'name',
-      title: 'Name',
+    defineField({
+      name: 'title',
+      title: 'Title',
       type: 'string',
-      validation: (Rule: any) => Rule.required(),
-    },
-    {
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
       options: {
-        source: 'name',
+        source: 'title',
         maxLength: 96,
       },
-      validation: (Rule: any) => Rule.required(),
-    },
-    {
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'price',
       title: 'Price',
       type: 'number',
-      validation: (Rule: any) => Rule.required().min(0),
-    },
-    {
-      name: 'discountPercentage',
-      title: 'Discount Percentage',
-      type: 'number',
-      validation: (Rule: any) => Rule.min(0).max(100),
-    },
-    {
+      validation: (Rule) => Rule.required().min(0),
+    }),
+    defineField({
       name: 'description',
       title: 'Description',
       type: 'text',
-    },
-    {
-      name: 'isNew',
-      title: 'Is New',
-      type: 'boolean',
-    },
-    {
-        name: 'category',
-        title: 'Category',
-        type: 'reference',
-        to: [{ type: 'category' }],
-        validation: (Rule: any) => Rule.required(),
-      },
-    {
+    }),
+    defineField({
       name: 'images',
       title: 'Images',
       type: 'array',
       of: [{ type: 'image' }],
-    },
+    }),
+    defineField({
+      name: 'category',
+      title: 'Category',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Smart Watches', value: 'smart-watches' },
+          { title: 'Earbuds', value: 'earbuds' },
+          { title: 'Headphones', value: 'headphones' },
+        ],
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'featured',
+      title: 'Featured Product',
+      type: 'boolean',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'features',
+      title: 'Features',
+      type: 'array',
+      of: [{ type: 'string' }],
+    }),
   ],
-}
+});

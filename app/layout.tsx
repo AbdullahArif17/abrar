@@ -8,7 +8,7 @@ import { CartDrawer } from '@/components/CartDrawer'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Zero Lifestyle | Premium Smart Watches & Audio',
+  title: 'Zero Lifestyle',
   description: 'Discover the latest in smart technology with Zero Lifestyle.',
 }
 
