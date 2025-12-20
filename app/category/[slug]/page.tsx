@@ -5,9 +5,9 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 interface Props {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 async function getProductsByCategory(slug: string) {
@@ -23,13 +23,14 @@ async function getProductsByCategory(slug: string) {
 }
 
 export default async function CategoryPage({ params }: Props) {
-  const products = await getProductsByCategory(params.slug)
+  const { slug } = await params
+  const products = await getProductsByCategory(slug)
 
   if (!products) return notFound()
 
   return (
     <div className="container mx-auto px-4 py-12 md:py-20">
-      <h1 className="text-4xl font-bold mb-12 capitalize tracking-tight text-black">{params.slug.replace('-', ' ')}</h1>
+      <h1 className="text-4xl font-bold mb-12 capitalize tracking-tight text-black">{slug.replace('-', ' ')}</h1>
       
       {products.length === 0 ? (
          <div className="py-20 text-center text-gray-500">

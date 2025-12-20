@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Check, Truck, Shield, ArrowLeft } from 'lucide-react';
 
-export default async function ProductPage({ params }: { params: { slug: string } }) {
+export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params; // Awaiting params for Next.js 15
   const product: Product = await getProduct(slug);
 
