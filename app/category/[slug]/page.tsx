@@ -1,4 +1,3 @@
-
 import { client, urlFor } from '@/lib/sanity'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -15,7 +14,7 @@ async function getProductsByCategory(slug: string) {
     _id,
     name,
     price,
-    slug,
+    "slug": slug.current,
     images,
     "category": category->title
   }`
@@ -30,7 +29,7 @@ export default async function CategoryPage({ params }: Props) {
 
   return (
     <div className="container mx-auto px-4 py-12 md:py-20">
-      <h1 className="text-4xl font-bold mb-12 capitalize tracking-tight text-black">{slug.replace('-', ' ')}</h1>
+      <h1 className="text-4xl font-bold mb-12 capitalize tracking-tight text-black">{slug.replaceAll('-', ' ')}</h1>
       
       {products.length === 0 ? (
          <div className="py-20 text-center text-gray-500">
@@ -39,7 +38,7 @@ export default async function CategoryPage({ params }: Props) {
       ) : (
          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
             {products.map((product: any) => (
-               <Link href={`/product/${product.slug.current}`} key={product._id} className="group block">
+               <Link href={`/product/${product.slug}`} key={product._id} className="group block">
                   <div className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden mb-4">
                      {product.images && product.images[0] && (
                         <Image 
