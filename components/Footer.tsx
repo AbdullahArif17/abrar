@@ -3,11 +3,11 @@ import { Facebook, Instagram, Twitter } from "lucide-react"
 
 export function Footer() {
   return (
-    <footer className="bg-secondary/30 border-t border-border pt-16 pb-8">
+    <footer className="bg-gradient-to-b from-secondary/40 to-white border-t border-border pt-20 pb-10">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
           <div>
-            <h3 className="font-bold text-xl mb-4 tracking-tighter">ZERO.</h3>
+            <h3 className="font-bold text-xl mb-4 tracking-tighter bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">JTech Mart</h3>
             <p className="text-muted-foreground text-sm mb-6 max-w-xs">
               Premium tech essentials for the modern lifestyle. Simplified, elegant, and built to last.
             </p>
@@ -47,7 +47,7 @@ export function Footer() {
         </div>
         
         <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-muted-foreground">
-            <p>&copy; {new Date().getFullYear()} Zero Lifestyle. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} JTech Mart. All rights reserved.</p>
             <div className="flex gap-6 mt-4 md:mt-0">
                 <Link href="#" className="hover:text-primary transition-colors">Privacy Policy</Link>
                 <Link href="#" className="hover:text-primary transition-colors">Terms</Link>

@@ -24,11 +24,11 @@ export function Navbar() {
   const isActive = (path: string) => pathname === path;
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-border/40 bg-white/80 backdrop-blur-md supports-[backdrop-filter]:bg-white/60">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+    <nav className="sticky top-0 z-50 border-b border-border/40 bg-white/95 backdrop-blur-lg supports-[backdrop-filter]:bg-white/80 shadow-sm">
+      <div className="container mx-auto px-4 h-18 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="font-bold text-2xl tracking-tighter text-primary flex items-center gap-2">
-            ZERO.
+        <Link href="/" className="font-bold text-2xl tracking-tighter text-primary flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">JTech Mart</span>
         </Link>
 
         {/* Desktop Nav */}

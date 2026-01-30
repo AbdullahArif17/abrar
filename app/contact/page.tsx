@@ -29,7 +29,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-primary">Email</h3>
-                  <p className="text-muted-foreground">support@zerolifestyle.com</p>
+                  <p className="text-muted-foreground">support@jtechmart.com</p>
                 </div>
               </div>
               
