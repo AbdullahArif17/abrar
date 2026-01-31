@@ -6,7 +6,8 @@ function assertValue<T>(v: T | undefined, errorMessage: string): T {
     throw new Error(errorMessage)
   }
   return v
-}
+} 
+
 
 export const projectId = assertValue(
   process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
