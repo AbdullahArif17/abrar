@@ -1,12 +1,18 @@
 import Link from 'next/link';
 import { ProductCard } from '@/components/ProductCard';
-import { getFeaturedProducts } from '@/lib/sanity';
+import { getFeaturedProducts, getProducts } from '@/lib/sanity';
 import { Product } from '@/lib/products';
 import { ArrowRight, ShieldCheck, Truck, Clock } from 'lucide-react';
 import { Newsletter } from '@/components/Newsletter';
 
 export default async function Home() {
-  const featuredProducts: Product[] = await getFeaturedProducts();
+  let featuredProducts: Product[] = await getFeaturedProducts();
+  
+  // If no featured products, show first 3 products instead
+  if (featuredProducts.length === 0) {
+    const allProducts = await getProducts();
+    featuredProducts = allProducts.slice(0, 3);
+  }
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -93,7 +99,7 @@ export default async function Home() {
               </div>
               <h3 className="text-2xl font-bold mb-3 text-primary">Free Shipping</h3>
               <p className="text-muted-foreground max-w-xs mx-auto leading-relaxed">
-                Enjoy free shipping on all orders over $50. Delivered safely to your doorstep.
+                Enjoy free shipping on all orders over Rs. 5,000. Delivered safely to your doorstep.
               </p>
             </div>
             <div className="group flex flex-col items-center text-center p-8 rounded-2xl bg-gradient-to-br from-secondary/30 to-white border border-border/50 hover:border-primary/30 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
@@ -120,7 +126,12 @@ export default async function Home() {
 
       {/* Newsletter Section */}
       <section className="py-24 bg-gradient-to-br from-primary via-primary/95 to-primary text-primary-foreground relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.05"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
+        <div 
+          className="absolute inset-0 opacity-20"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+          }}
+        ></div>
         <div className="container mx-auto px-4 text-center relative z-10">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Join the JTech Mart Community</h2>
           <p className="text-primary-foreground/80 mb-10 max-w-lg mx-auto text-lg">

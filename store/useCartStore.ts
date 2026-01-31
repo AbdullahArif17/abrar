@@ -5,7 +5,7 @@ export interface Product {
     _id: string;
     name: string;
     price: number;
-    images: any; // Sanity image
+    images: any; // Sanity image or array of images
     slug: { current: string };
     description: string;
 }

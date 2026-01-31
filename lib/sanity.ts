@@ -25,7 +25,7 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: false, // Set to false for fresh data during development
+  useCdn: process.env.NODE_ENV === 'production', // Use CDN in production for better performance
 });
 
 const builder = imageUrlBuilder(client);
@@ -34,51 +34,86 @@ export function urlFor(source: any) {
   return builder.image(source);
 }
 
+// Helper function to get image URL from product
+export function getProductImageUrl(product: { images?: any[]; image?: any }): string {
+  if (product.images && product.images.length > 0 && product.images[0]) {
+    return urlFor(product.images[0]).url();
+  }
+  if (product.image) {
+    if (typeof product.image === 'string') {
+      return product.image;
+    }
+    return urlFor(product.image).url();
+  }
+  return '/placeholder.jpg';
+}
+
 // GROQ Queries
-export const productsQuery = `*[_type == "product"] {
+export const productsQuery = `*[_type == "product"] | order(_createdAt desc) {
   _id,
   title,
+  name,
   price,
   description,
   "slug": slug.current,
   "category": category,
-  "images": images[].asset->url,
+  "images": images,
   featured,
   features
 }`;
 
-export const featuredProductsQuery = `*[_type == "product" && featured == true] {
+export const featuredProductsQuery = `*[_type == "product" && featured == true] | order(_createdAt desc) {
   _id,
   title,
+  name,
   price,
   description,
   "slug": slug.current,
   "category": category,
-  "images": images[].asset->url,
+  "images": images,
   featured
 }[0...3]`;
 
 export const productBySlugQuery = `*[_type == "product" && slug.current == $slug][0] {
   _id,
   title,
+  name,
   price,
   description,
   "slug": slug.current,
   "category": category,
-  "images": images[].asset->url,
+  "images": images,
   featured,
   features
 }`;
 
 // Fetch Functions
 export async function getProducts() {
-  return client.fetch(productsQuery);
+  try {
+    const products = await client.fetch(productsQuery);
+    return products || [];
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    return [];
+  }
 }
 
 export async function getFeaturedProducts() {
-  return client.fetch(featuredProductsQuery);
+  try {
+    const products = await client.fetch(featuredProductsQuery);
+    return products || [];
+  } catch (error) {
+    console.error('Error fetching featured products:', error);
+    return [];
+  }
 }
 
 export async function getProduct(slug: string) {
-  return client.fetch(productBySlugQuery, { slug });
+  try {
+    const product = await client.fetch(productBySlugQuery, { slug });
+    return product;
+  } catch (error) {
+    console.error('Error fetching product:', error);
+    return null;
+  }
 }

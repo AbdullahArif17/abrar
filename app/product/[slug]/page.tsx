@@ -2,15 +2,17 @@
 import { client, urlFor } from '@/lib/sanity'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
-import { AddToCartButton } from './AddToCartButton' // Client component
+import { AddToCartButton } from '@/components/AddToCartButton'
 
 async function getProduct(slug: string) {
   const query = `*[_type == "product" && slug.current == $slug][0] {
     _id,
     name,
+    title,
     price,
     description,
     images,
+    "slug": slug.current,
     "category": category->title
   }`
   return client.fetch(query, { slug })

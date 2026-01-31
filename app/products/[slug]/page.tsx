@@ -1,8 +1,9 @@
-import { getProduct, urlFor } from '@/lib/sanity';
+import { getProduct, getProductImageUrl } from '@/lib/sanity';
 import { Product } from '@/lib/products';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Check, Truck, Shield, ArrowLeft } from 'lucide-react';
+import { AddToCartButton } from '@/components/AddToCartButton';
 
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params; // Awaiting params for Next.js 15
@@ -19,7 +20,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     );
   }
 
-  const imageUrl = product.image ? (typeof product.image === 'string' ? product.image : urlFor(product.image).url()) : '/placeholder.jpg';
+  const imageUrl = getProductImageUrl(product);
 
   return (
     <div className="min-h-screen bg-white">
@@ -46,8 +47,6 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 priority
               />
             </div>
-             {/* Thumbnail placeholders if we had multiple images */}
-             {/* <div className="grid grid-cols-4 gap-4"> ... </div> */}
           </div>
 
           {/* Product Info */}
@@ -60,7 +59,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 {product.title || product.name}
               </h1>
               <div className="text-3xl font-medium text-primary">
-                ${product.price}
+                Rs. {product.price.toLocaleString()}
               </div>
             </div>
 
@@ -71,10 +70,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             {/* Actions */}
             <div className="flex flex-col gap-4 border-t border-b border-border py-8">
                 <div className="flex flex-col sm:flex-row gap-4">
-                    <button className="flex-1 bg-primary text-primary-foreground py-4 px-8 rounded-full font-bold text-lg hover:bg-primary/90 transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-primary/20">
-                        Add to Cart
-                    </button>
-                    {/* Quantity or Wishlist could go here */}
+                    <AddToCartButton product={product} variant="large" className="flex-1" />
                 </div>
                 <p className="text-center text-xs text-muted-foreground flex items-center justify-center gap-2">
                     <Check className="w-3 h-3 text-green-500" /> In Stock & Ready to Ship
@@ -89,7 +85,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                     </div>
                     <div>
                         <h4 className="font-semibold text-sm">Free Shipping</h4>
-                        <p className="text-xs text-muted-foreground">On all orders over $50</p>
+                        <p className="text-xs text-muted-foreground">On all orders over Rs. 5,000</p>
                     </div>
                 </div>
                 <div className="flex items-start gap-3">
