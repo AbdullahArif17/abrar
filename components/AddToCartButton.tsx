@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import { useCartStore } from '@/store/useCartStore'
 import { ShoppingCart, Check } from 'lucide-react'
+import { Toast } from './Toast'
 
 interface AddToCartButtonProps {
   product: {
@@ -23,6 +24,7 @@ interface AddToCartButtonProps {
 export function AddToCartButton({ product, variant = 'default', className = '' }: AddToCartButtonProps) {
   const { addItem } = useCartStore()
   const [added, setAdded] = useState(false)
+  const [showToast, setShowToast] = useState(false)
 
   const handleAddToCart = () => {
     // Transform product to match cart store format
@@ -39,6 +41,7 @@ export function AddToCartButton({ product, variant = 'default', className = '' }
 
     addItem(cartProduct)
     setAdded(true)
+    setShowToast(true)
     setTimeout(() => setAdded(false), 2000)
   }
 
@@ -50,23 +53,34 @@ export function AddToCartButton({ product, variant = 'default', className = '' }
     small: "bg-primary text-primary-foreground py-2 px-4 rounded-lg text-xs shadow-sm hover:shadow-md"
   }
 
+  const productName = product.name || product.title || 'Product'
+
   return (
-    <button 
-      onClick={handleAddToCart}
-      disabled={added}
-      className={`${baseStyles} ${variantStyles[variant]} ${added ? 'bg-green-600 hover:bg-green-600' : 'hover:bg-primary/90'} ${className}`}
-    >
-      {added ? (
-        <>
-          <Check className="w-5 h-5" />
-          Added!
-        </>
-      ) : (
-        <>
-          <ShoppingCart className="w-5 h-5" />
-          Add to Cart
-        </>
-      )}
-    </button>
+    <>
+      <button 
+        onClick={handleAddToCart}
+        disabled={added}
+        className={`${baseStyles} ${variantStyles[variant]} ${added ? 'bg-green-600 hover:bg-green-600' : 'hover:bg-primary/90'} ${className}`}
+        aria-label={`Add ${productName} to cart`}
+      >
+        {added ? (
+          <>
+            <Check className="w-5 h-5" />
+            Added!
+          </>
+        ) : (
+          <>
+            <ShoppingCart className="w-5 h-5" />
+            Add to Cart
+          </>
+        )}
+      </button>
+      <Toast
+        message={`${productName} added to cart!`}
+        type="success"
+        isVisible={showToast}
+        onClose={() => setShowToast(false)}
+      />
+    </>
   )
 }

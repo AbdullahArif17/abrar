@@ -8,8 +8,30 @@ import { CartDrawer } from '@/components/CartDrawer'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'JTech Mart - Premium Tech Essentials',
-  description: 'Discover the latest in smart technology with JTech Mart. Premium smart watches and audio devices.',
+  title: {
+    default: 'JTech Mart - Premium Tech Essentials',
+    template: '%s | JTech Mart'
+  },
+  description: 'Discover the latest in smart technology with JTech Mart. Premium smart watches and audio devices designed for the modern lifestyle.',
+  keywords: ['smart watches', 'earbuds', 'headphones', 'tech', 'electronics', 'Pakistan'],
+  authors: [{ name: 'JTech Mart' }],
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://abrar-two.vercel.app',
+    siteName: 'JTech Mart',
+    title: 'JTech Mart - Premium Tech Essentials',
+    description: 'Discover the latest in smart technology with JTech Mart. Premium smart watches and audio devices.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'JTech Mart - Premium Tech Essentials',
+    description: 'Discover the latest in smart technology with JTech Mart.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 }
 
 export default function RootLayout({

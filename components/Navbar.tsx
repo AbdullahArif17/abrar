@@ -27,7 +27,11 @@ export function Navbar() {
     <nav className="sticky top-0 z-50 border-b border-border/40 bg-white/95 backdrop-blur-lg supports-[backdrop-filter]:bg-white/80 shadow-sm">
       <div className="container mx-auto px-4 h-18 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="font-bold text-2xl tracking-tighter text-primary flex items-center gap-2 hover:opacity-80 transition-opacity">
+        <Link 
+          href="/" 
+          className="font-bold text-2xl tracking-tighter text-primary flex items-center gap-2 hover:opacity-80 transition-opacity"
+          aria-label="JTech Mart Home"
+        >
             <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">JTech Mart</span>
         </Link>
 

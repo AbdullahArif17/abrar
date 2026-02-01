@@ -1,9 +1,42 @@
 import { getProduct, getProductImageUrl } from '@/lib/sanity';
+import type { Metadata } from 'next';
 import { Product } from '@/lib/products';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Check, Truck, Shield, ArrowLeft } from 'lucide-react';
 import { AddToCartButton } from '@/components/AddToCartButton';
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const product = await getProduct(slug);
+
+  if (!product) {
+    return {
+      title: 'Product Not Found',
+    };
+  }
+
+  const title = product.title || product.name || 'Product';
+  const description = product.description || `Shop ${title} at JTech Mart`;
+  const imageUrl = getProductImageUrl(product);
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images: [imageUrl],
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [imageUrl],
+    },
+  };
+}
 
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params; // Awaiting params for Next.js 15
@@ -36,17 +69,33 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       <div className="container mx-auto px-4 py-12 md:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-start">
           
-          {/* Image Gallery (Simple for now) */}
+          {/* Image Gallery */}
           <div className="space-y-4">
-            <div className="aspect-square relative rounded-2xl overflow-hidden bg-secondary border border-border">
+            <div className="aspect-square relative rounded-2xl overflow-hidden bg-secondary border border-border group cursor-zoom-in">
               <Image
                 src={imageUrl}
                 alt={product.title || product.name || 'Product Image'}
                 fill
-                className="object-cover object-center"
+                className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
                 priority
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
+            {product.images && product.images.length > 1 && (
+              <div className="grid grid-cols-4 gap-4">
+                {product.images.slice(0, 4).map((img: any, i: number) => (
+                  <div key={i} className="aspect-square relative rounded-lg overflow-hidden border border-border cursor-pointer hover:border-primary transition-colors">
+                    <Image
+                      src={getProductImageUrl({ images: [img] })}
+                      alt={`${product.title || product.name} - Image ${i + 1}`}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 25vw, 12.5vw"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Product Info */}

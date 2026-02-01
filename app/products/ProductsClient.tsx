@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { ProductCard } from '@/components/ProductCard';
+import { ProductCardSkeleton } from '@/components/ProductCardSkeleton';
 import { Product } from '@/lib/products';
-import { Filter } from 'lucide-react';
+import { Filter, Search } from 'lucide-react';
 
 interface ProductsClientProps {
   products: Product[];
@@ -11,6 +12,7 @@ interface ProductsClientProps {
 
 export default function ProductsClient({ products }: ProductsClientProps) {
   const [activeCategory, setActiveCategory] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState<string>('');
   
   const categories = [
     { id: 'all', label: 'All Products' },
@@ -19,9 +21,22 @@ export default function ProductsClient({ products }: ProductsClientProps) {
     { id: 'headphones', label: 'Headphones' },
   ];
 
-  const filteredProducts = activeCategory === 'all' 
-    ? products 
-    : products.filter(product => product.category === activeCategory);
+  const filteredProducts = useMemo(() => {
+    let filtered = activeCategory === 'all' 
+      ? products 
+      : products.filter(product => product.category === activeCategory);
+
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(product => 
+        (product.title || product.name || '').toLowerCase().includes(query) ||
+        (product.description || '').toLowerCase().includes(query) ||
+        (product.category || '').toLowerCase().includes(query)
+      );
+    }
+
+    return filtered;
+  }, [products, activeCategory, searchQuery]);
 
   return (
     <div className="min-h-screen bg-secondary/20">
@@ -38,6 +53,20 @@ export default function ProductsClient({ products }: ProductsClientProps) {
       </div>
 
       <div className="container mx-auto px-4 py-8 md:py-12">
+        {/* Search Bar */}
+        <div className="mb-6">
+          <div className="relative max-w-md mx-auto md:mx-0">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 rounded-lg border border-border bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+            />
+          </div>
+        </div>
+
         <div className="flex flex-col md:flex-row gap-8 items-start">
           {/* Filters Sidebar (Desktop) / Topbar (Mobile) */}
           <div className="w-full md:w-64 flex-shrink-0">
@@ -67,8 +96,22 @@ export default function ProductsClient({ products }: ProductsClientProps) {
 
           {/* Product Grid */}
           <div className="flex-1">
-            <div className="mb-6 text-sm text-muted-foreground">
-              Showing {filteredProducts.length} results
+            <div className="mb-6 flex items-center justify-between">
+              <div className="text-sm text-muted-foreground">
+                Showing {filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'}
+                {searchQuery && ` for "${searchQuery}"`}
+              </div>
+              {(searchQuery || activeCategory !== 'all') && (
+                <button
+                  onClick={() => {
+                    setSearchQuery('')
+                    setActiveCategory('all')
+                  }}
+                  className="text-sm text-primary font-medium hover:underline"
+                >
+                  Clear all
+                </button>
+              )}
             </div>
 
             {filteredProducts.length > 0 ? (
@@ -79,9 +122,14 @@ export default function ProductsClient({ products }: ProductsClientProps) {
               </div>
             ) : (
               <div className="text-center py-20 bg-white rounded-lg border border-border border-dashed">
-                <p className="text-muted-foreground">No products found in this category.</p>
+                <p className="text-muted-foreground mb-2">
+                  {searchQuery ? `No products found for "${searchQuery}"` : 'No products found in this category.'}
+                </p>
                 <button 
-                  onClick={() => setActiveCategory('all')}
+                  onClick={() => {
+                    setSearchQuery('')
+                    setActiveCategory('all')
+                  }}
                   className="mt-4 text-primary font-medium hover:underline"
                 >
                   Clear filters
