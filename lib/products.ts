@@ -3,6 +3,7 @@ export interface Product {
     title: string;
     description: string;
     price: number;
+    discountPrice?: number; // Optional discount/sale price
     image?: any; // Legacy support
     images?: any[]; // Sanity images array
     slug: string;

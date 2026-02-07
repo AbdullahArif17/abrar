@@ -4,6 +4,7 @@ import './globals.css'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
 import { CartDrawer } from '@/components/CartDrawer'
+import { ThemeProvider } from '@/components/ThemeProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -40,14 +41,16 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
+        <ThemeProvider>
         <Navbar />
         <CartDrawer />
-        <main className="min-h-screen">
+          <main className="min-h-screen bg-background text-foreground">
           {children}
         </main>
         <Footer />
+        </ThemeProvider>
       </body>
     </html>
   )

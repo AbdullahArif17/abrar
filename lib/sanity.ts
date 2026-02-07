@@ -54,6 +54,7 @@ export const productsQuery = `*[_type == "product"] | order(_createdAt desc) {
   title,
   name,
   price,
+  discountPrice,
   description,
   "slug": slug.current,
   "category": category,
@@ -67,18 +68,21 @@ export const featuredProductsQuery = `*[_type == "product" && featured == true] 
   title,
   name,
   price,
+  discountPrice,
   description,
   "slug": slug.current,
   "category": category,
   "images": images,
-  featured
-}[0...3]`;
+  featured,
+  features
+}`;
 
 export const productBySlugQuery = `*[_type == "product" && slug.current == $slug][0] {
   _id,
   title,
   name,
   price,
+  discountPrice,
   description,
   "slug": slug.current,
   "category": category,

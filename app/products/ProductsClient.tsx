@@ -39,9 +39,9 @@ export default function ProductsClient({ products }: ProductsClientProps) {
   }, [products, activeCategory, searchQuery]);
 
   return (
-    <div className="min-h-screen bg-secondary/20">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-white border-b border-border">
+      <div className="bg-background border-b border-border">
         <div className="container mx-auto px-4 py-12 md:py-20 text-center">
           <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-primary mb-4">
             Our Collection
@@ -62,7 +62,7 @@ export default function ProductsClient({ products }: ProductsClientProps) {
               placeholder="Search products..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 rounded-lg border border-border bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              className="w-full pl-10 pr-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-foreground placeholder:text-muted-foreground"
             />
           </div>
         </div>
@@ -70,7 +70,7 @@ export default function ProductsClient({ products }: ProductsClientProps) {
         <div className="flex flex-col md:flex-row gap-8 items-start">
           {/* Filters Sidebar (Desktop) / Topbar (Mobile) */}
           <div className="w-full md:w-64 flex-shrink-0">
-            <div className="bg-white p-6 rounded-lg border border-border sticky top-24">
+            <div className="bg-card p-6 rounded-lg border border-border sticky\ top-24">
               <div className="flex items-center gap-2 mb-6 text-primary">
                 <Filter className="w-5 h-5" />
                 <h2 className="font-semibold">Categories</h2>
@@ -121,7 +121,7 @@ export default function ProductsClient({ products }: ProductsClientProps) {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-20 bg-white rounded-lg border border-border border-dashed">
+              <div className="text-center py-20 bg-card rounded-lg border border-border border-dashed">
                 <p className="text-muted-foreground mb-2">
                   {searchQuery ? `No products found for "${searchQuery}"` : 'No products found in this category.'}
                 </p>

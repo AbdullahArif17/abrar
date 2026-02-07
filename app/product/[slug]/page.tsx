@@ -10,6 +10,7 @@ async function getProduct(slug: string) {
     name,
     title,
     price,
+    discountPrice,
     description,
     images,
     "slug": slug.current,
@@ -25,47 +26,68 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   if (!product) return notFound()
 
   return (
-    <div className="container mx-auto px-4 py-12 md:py-20">
-      <div className="grid md:grid-cols-2 gap-12 lg:gap-20">
+    <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-6 sm:py-8 md:py-12 lg:py-16 xl:py-20">
+      <div className="grid lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 xl:gap-20">
         {/* Gallery */}
-        <div className="space-y-4">
+        <div className="space-y-4 sm:space-y-5 md:space-y-6">
            {product.images && product.images.length > 0 && (
-             <div className="relative aspect-square bg-gray-100 rounded-2xl overflow-hidden">
+             <div className="relative aspect-square bg-secondary rounded-2xl md:rounded-3xl overflow-hidden shadow-lg border border-border">
                <Image 
                  src={urlFor(product.images[0]).url()}
-                 alt={product.name}
+                 alt={product.name || product.title || 'Product'}
                  fill
                  className="object-cover"
                  priority
+                 sizes="(max-width: 1024px) 100vw, 50vw"
                />
              </div>
            )}
-           <div className="grid grid-cols-4 gap-4">
+           <div className="grid grid-cols-4 gap-3 sm:gap-4 md:gap-5">
               {product.images && product.images.map((img: any, i: number) => (
-                 <div key={i} className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden cursor-pointer hover:opacity-80 transition-opacity">
-                    <Image src={urlFor(img).url()} alt="" fill className="object-cover" />
+                 <div key={i} className="relative aspect-square bg-secondary rounded-xl overflow-hidden cursor-pointer hover:opacity-80 transition-all hover:scale-105 border-2 border-border shadow-md">
+                    <Image src={urlFor(img).url()} alt={`${product.name || product.title} - Image ${i + 1}`} fill className="object-cover" sizes="(max-width: 1024px) 25vw, 12.5vw" />
                  </div>
               ))}
            </div>
         </div>
 
         {/* Details */}
-        <div className="flex flex-col justify-center">
-           <span className="text-gray-400 text-sm font-medium uppercase tracking-wider mb-2">{product.category}</span>
-           <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">{product.name}</h1>
-           <p className="text-2xl text-gray-900 font-medium mb-8">PKR {product.price.toLocaleString()}</p>
+        <div className="flex flex-col justify-center gap-6 sm:gap-7 md:gap-8 lg:gap-10">
+           <div className="space-y-3 sm:space-y-4">
+             <span className="text-muted-foreground text-xs sm:text-sm md:text-base font-semibold uppercase tracking-widest">{product.category}</span>
+             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-primary leading-tight">{product.name || product.title}</h1>
+             <div className="flex flex-wrap items-baseline gap-3 sm:gap-4 pt-2">
+               {product.discountPrice ? (
+                 <>
+                   <div className="flex flex-col gap-1">
+                     <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary">
+                       Rs. {product.discountPrice.toLocaleString()}
+                     </span>
+                     <span className="text-lg sm:text-xl md:text-2xl text-muted-foreground line-through">
+                       Rs. {product.price.toLocaleString()}
+                     </span>
+                   </div>
+                   <span className="px-3 sm:px-4 py-1.5 sm:py-2 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-full text-sm sm:text-base font-bold">
+                     {Math.round(((product.price - product.discountPrice) / product.price) * 100)}% OFF
+                   </span>
+                 </>
+               ) : (
+                 <p className="text-3xl sm:text-4xl md:text-5xl text-primary font-bold">Rs. {product.price.toLocaleString()}</p>
+               )}
+             </div>
+           </div>
            
-           <div className="prose prose-gray mb-10 text-gray-600">
-              <p>{product.description}</p>
+           <div className="prose prose-lg max-w-none">
+              <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed font-normal">{product.description}</p>
            </div>
 
-           <div className="mb-8">
-            <AddToCartButton product={product} /> 
+           <div>
+            <AddToCartButton product={product} variant="large" className="w-full text-base sm:text-lg" /> 
            </div>
            
-           <div className="border-t border-gray-100 pt-8 space-y-3 text-sm text-gray-500">
-              <p>Free Standard Shipping</p>
-              <p>Returns accepted within 14 days</p>
+           <div className="border-t border-border pt-6 sm:pt-8 md:pt-10 space-y-3 sm:space-y-4 text-base sm:text-lg text-muted-foreground">
+              <p className="font-medium">Free Standard Shipping</p>
+              <p className="font-medium">Returns accepted within 14 days</p>
            </div>
         </div>
       </div>

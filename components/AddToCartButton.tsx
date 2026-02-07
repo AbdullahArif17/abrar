@@ -11,6 +11,7 @@ interface AddToCartButtonProps {
     name?: string;
     title?: string;
     price: number;
+    discountPrice?: number;
     images?: any;
     image?: any;
     slug: string | { current: string };
@@ -32,6 +33,7 @@ export function AddToCartButton({ product, variant = 'default', className = '' }
       _id: product._id,
       name: product.name || product.title || 'Product',
       price: product.price,
+      discountPrice: product.discountPrice,
       images: product.images || (product.image ? [product.image] : []),
       slug: typeof product.slug === 'string' 
         ? { current: product.slug } 
@@ -45,12 +47,12 @@ export function AddToCartButton({ product, variant = 'default', className = '' }
     setTimeout(() => setAdded(false), 2000)
   }
 
-  const baseStyles = "flex items-center justify-center gap-2 font-semibold transition-all hover:scale-105 active:scale-95"
+  const baseStyles = "flex items-center justify-center gap-2 font-semibold transition-all hover:scale-105 active:scale-95 dark:font-bold"
   
   const variantStyles = {
-    default: "bg-primary text-primary-foreground py-3 px-6 rounded-xl text-sm shadow-md hover:shadow-lg",
-    large: "bg-primary text-primary-foreground py-4 px-8 rounded-full text-lg shadow-lg hover:shadow-xl",
-    small: "bg-primary text-primary-foreground py-2 px-4 rounded-lg text-xs shadow-sm hover:shadow-md"
+    default: "bg-primary text-primary-foreground py-3 px-6 rounded-xl text-sm shadow-md hover:shadow-lg dark:bg-white dark:text-black dark:hover:bg-gray-200",
+    large: "bg-primary text-primary-foreground py-4 px-8 rounded-xl text-base font-bold shadow-lg hover:shadow-xl dark:bg-white dark:text-black dark:hover:bg-gray-200",
+    small: "bg-primary text-primary-foreground py-2 px-4 rounded-lg text-xs shadow-sm hover:shadow-md dark:bg-white dark:text-black dark:hover:bg-gray-200"
   }
 
   const productName = product.name || product.title || 'Product'
