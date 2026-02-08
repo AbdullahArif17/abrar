@@ -4,6 +4,7 @@ import { HeroSection } from '@/components/HeroSection';
 import { FeaturedSection } from '@/components/FeaturedSection';
 import { BenefitsSection } from '@/components/BenefitsSection';
 import { NewsletterSection } from '@/components/NewsletterSection';
+import { TrustBadges } from '@/components/TrustBadges';
 
 export default async function Home() {
   let featuredProducts: Product[] = await getFeaturedProducts();
@@ -17,6 +18,7 @@ export default async function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       <HeroSection />
+      <TrustBadges />
       <FeaturedSection products={featuredProducts} />
       <BenefitsSection />
       <NewsletterSection />

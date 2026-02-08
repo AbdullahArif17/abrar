@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 
 export function AboutValues() {
   return (
-    <section className="py-24 bg-gradient-to-br from-primary via-primary/95 to-primary text-primary-foreground relative overflow-hidden">
+    <section className="py-24 bg-zinc-900 text-white relative overflow-hidden dark:bg-black">
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-3xl mx-auto text-center mb-20">
           <motion.div 

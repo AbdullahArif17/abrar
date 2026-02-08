@@ -28,7 +28,7 @@ export function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/70 shadow-sm">
-      <div className="container mx-auto px-4 md:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <div className="container mx-auto px-4 md:px-6 lg:px-8 h-24 flex items-center justify-between">
         {/* Logo */}
         <motion.div
           whileHover={{ scale: 1.05 }}
@@ -42,12 +42,12 @@ export function Navbar() {
             <Image
               src="/J Tech Mart Logo-01.png"
               alt="JTech Mart Logo"
-              width={60}
-              height={60}
-              className="h-12 w-auto md:h-16 md:w-auto dark:invert dark:brightness-0 dark:contrast-200"
+              width={80}
+              height={80}
+              className="h-14 w-auto md:h-[70px] lg:h-20"
               priority
             />
-            <span className="font-bold text-xl md:text-2xl lg:text-3xl tracking-tight text-primary bg-gradient-to-r from-primary via-primary/90 to-primary bg-clip-text text-transparent font-extrabold hidden sm:inline-block">
+            <span className="font-extrabold text-2xl md:text-3xl lg:text-4xl tracking-tight text-primary hidden sm:inline-block">
               JTech Mart
             </span>
         </Link>

@@ -21,11 +21,11 @@ export function FeaturedSection({ products }: FeaturedSectionProps) {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-4">
-              <span className="text-xs font-semibold text-primary uppercase tracking-wider">Featured</span>
+            <div className="inline-block px-4 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 mb-4">
+              <span className="text-xs font-semibold text-orange-500 uppercase tracking-wider">🔥 Trending Now</span>
             </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-primary mb-4">Featured Collection</h2>
-            <p className="text-muted-foreground text-lg md:text-xl">Handpicked favorites just for you.</p>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-primary mb-4">BESTSELLER FOR YOU 🔥</h2>
+            <p className="text-muted-foreground text-lg md:text-xl">Our most loved products, handpicked for you.</p>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, x: 20 }}

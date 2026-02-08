@@ -3,8 +3,9 @@ import type { Metadata } from 'next';
 import { Product } from '@/lib/products';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Check, Truck, Shield, ArrowLeft } from 'lucide-react';
+import { Check, Truck, Shield, ArrowLeft, Star } from 'lucide-react';
 import { AddToCartButton } from '@/components/AddToCartButton';
+import { ProductImageGallery } from '@/components/ProductImageGallery';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
@@ -69,44 +70,59 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-6 sm:py-8 md:py-12 lg:py-16 xl:py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 xl:gap-20 items-start">
           
-          {/* Image Gallery */}
+          {/* Product Image Gallery */}
           <div className="space-y-4 sm:space-y-5 md:space-y-6">
-            <div className="aspect-square relative rounded-2xl md:rounded-3xl overflow-hidden bg-secondary border border-border group cursor-zoom-in shadow-lg">
-              <Image
-                src={imageUrl}
-                alt={product.title || product.name || 'Product Image'}
-                fill
-                className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                priority
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
-            </div>
-            {product.images && product.images.length > 1 && (
-              <div className="grid grid-cols-4 gap-3 sm:gap-4 md:gap-5">
-                {product.images.slice(0, 4).map((img: any, i: number) => (
-                  <div key={i} className="aspect-square relative rounded-xl overflow-hidden border-2 border-border cursor-pointer hover:border-primary transition-all hover:scale-105 shadow-md">
-                    <Image
-                      src={getProductImageUrl({ images: [img] })}
-                      alt={`${product.title || product.name} - Image ${i + 1}`}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 1024px) 25vw, 12.5vw"
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
+            <ProductImageGallery product={product} />
           </div>
 
           {/* Product Info */}
           <div className="flex flex-col gap-6 sm:gap-7 md:gap-8 lg:gap-10">
             <div className="space-y-3 sm:space-y-4">
-              <p className="text-xs sm:text-sm md:text-base font-semibold text-primary/70 uppercase tracking-widest mb-1">
-                {product.category?.replace('-', ' ')}
-              </p>
+              {/* Tags Row */}
+              <div className="flex flex-wrap gap-2">
+                <span className="text-xs sm:text-sm font-semibold text-primary/70 uppercase tracking-widest px-3 py-1 bg-primary/5 rounded-full">
+                  {product.category?.replace('-', ' ')}
+                </span>
+                {product.productTags?.map((tag: string) => (
+                  <span 
+                    key={tag}
+                    className={`px-3 py-1 text-xs sm:text-sm font-bold rounded-full ${
+                      tag === 'bestseller' ? 'bg-orange-500 text-white' :
+                      tag === 'new' ? 'bg-green-500 text-white' :
+                      tag === 'limited' ? 'bg-red-500 text-white' :
+                      tag === 'hot' ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white' :
+                      'bg-primary/10 text-primary'
+                    }`}
+                  >
+                    {tag === 'bestseller' ? '🔥 Best Seller' :
+                     tag === 'new' ? '✨ New' :
+                     tag === 'limited' ? '⏰ Limited' :
+                     tag === 'hot' ? '🔥 Hot' : tag}
+                  </span>
+                ))}
+              </div>
+              
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-primary leading-tight">
                 {product.title || product.name}
               </h1>
+              
+              {/* Rating & Reviews */}
+              {(product.rating || product.reviewCount) && (
+                <div className="flex items-center gap-3 text-sm sm:text-base">
+                  {product.rating && (
+                    <span className="flex items-center gap-1 text-yellow-500 font-semibold">
+                      <Star className="w-5 h-5 fill-current" />
+                      {product.rating.toFixed(1)}
+                    </span>
+                  )}
+                  {product.reviewCount && product.reviewCount > 0 && (
+                    <span className="text-muted-foreground">
+                      ({product.reviewCount.toLocaleString()} reviews)
+                    </span>
+                  )}
+                </div>
+              )}
+              
               <div className="flex flex-wrap items-baseline gap-3 sm:gap-4 pt-2">
                 {product.discountPrice ? (
                   <>

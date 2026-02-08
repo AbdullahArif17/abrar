@@ -12,6 +12,11 @@ export interface Product {
     id?: string; // keeping for dummy data compatibility if needed
     name?: string; // keeping for compatibility
     features?: string[];
+    reviewCount?: number; // Number of customer reviews
+    rating?: number; // Average rating out of 5
+    productTags?: ('bestseller' | 'new' | 'limited' | 'hot')[]; // Product tags
+    _createdAt?: string;
+    featured?: boolean;
 }
 
 export const products: Product[] = [

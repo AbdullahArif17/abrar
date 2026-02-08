@@ -5,6 +5,7 @@ import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
 import { CartDrawer } from '@/components/CartDrawer'
 import { ThemeProvider } from '@/components/ThemeProvider'
+import { AnnouncementBar } from '@/components/AnnouncementBar'
 
 const inter = Inter({ subsets: ['latin'] })
 

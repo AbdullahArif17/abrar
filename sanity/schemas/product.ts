@@ -56,13 +56,6 @@ export const product = defineType({
       name: 'category',
       title: 'Category',
       type: 'string',
-      options: {
-        list: [
-          { title: 'Smart Watches', value: 'smart-watches' },
-          { title: 'Earbuds', value: 'earbuds' },
-          { title: 'Headphones', value: 'headphones' },
-        ],
-      },
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -76,6 +69,36 @@ export const product = defineType({
       title: 'Features',
       type: 'array',
       of: [{ type: 'string' }],
+    }),
+    defineField({
+      name: 'reviewCount',
+      title: 'Review Count',
+      type: 'number',
+      description: 'Number of customer reviews',
+      initialValue: 0,
+      validation: (Rule) => Rule.min(0),
+    }),
+    defineField({
+      name: 'rating',
+      title: 'Rating',
+      type: 'number',
+      description: 'Average rating out of 5',
+      validation: (Rule) => Rule.min(0).max(5),
+    }),
+    defineField({
+      name: 'productTags',
+      title: 'Product Tags',
+      type: 'array',
+      of: [{ type: 'string' }],
+      options: {
+        list: [
+          { title: '🔥 Best Seller', value: 'bestseller' },
+          { title: '✨ New Launch', value: 'new' },
+          { title: '⏰ Limited Stock', value: 'limited' },
+          { title: '🔥 Hot', value: 'hot' },
+        ],
+      },
+      description: 'Tags to highlight the product',
     }),
   ],
 });

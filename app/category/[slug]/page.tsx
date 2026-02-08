@@ -1,7 +1,7 @@
-import { client, urlFor } from '@/lib/sanity'
-import Image from 'next/image'
-import Link from 'next/link'
+import { client } from '@/lib/sanity'
 import { notFound } from 'next/navigation'
+import { ProductCard } from '@/components/ProductCard'
+import { Product } from '@/lib/products'
 
 interface Props {
   params: Promise<{
@@ -10,64 +10,72 @@ interface Props {
 }
 
 async function getProductsByCategory(slug: string) {
-  const query = `*[_type == "product" && category->slug.current == $slug] {
+  // Category is stored as a string value (e.g., 'smart-watches', 'earbuds')
+  const query = `*[_type == "product" && category == $slug] | order(_createdAt desc) {
     _id,
     name,
     title,
     price,
     discountPrice,
+    description,
     "slug": slug.current,
     images,
-    "category": category->title
+    category,
+    reviewCount,
+    rating,
+    productTags,
+    features
   }`
   return client.fetch(query, { slug })
 }
 
+const categoryTitles: Record<string, string> = {
+  'smart-watches': 'Smart Watches',
+  'earbuds': 'Earbuds',
+  'headphones': 'Headphones',
+}
+
 export default async function CategoryPage({ params }: Props) {
   const { slug } = await params
-  const products = await getProductsByCategory(slug)
+  const products: Product[] = await getProductsByCategory(slug)
 
   if (!products) return notFound()
 
+  const categoryTitle = categoryTitles[slug] || slug.replaceAll('-', ' ')
+
   return (
-    <div className="container mx-auto px-4 py-12 md:py-20">
-      <h1 className="text-4xl font-bold mb-12 capitalize tracking-tight text-primary">{slug.replaceAll('-', ' ')}</h1>
-      
-      {products.length === 0 ? (
-         <div className="py-20 text-center text-muted-foreground">
-            <p>No products found in this category.</p>
-         </div>
-      ) : (
-         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
-            {products.map((product: any) => (
-               <Link href={`/products/${product.slug}`} key={product._id} className="group block">
-                  <div className="relative aspect-square bg-secondary rounded-lg overflow-hidden mb-4">
-                     {product.images && product.images[0] && (
-                        <Image 
-                           src={urlFor(product.images[0]).url()} 
-                           alt={product.name || product.title || 'Product'} 
-                           fill 
-                           className="object-cover group-hover:scale-105 transition-transform duration-500" 
-                        />
-                     )}
-                  </div>
-                  <div>
-                     <h3 className="font-medium text-lg leading-snug text-foreground group-hover:text-primary transition-colors">{product.name || product.title}</h3>
-                     <div className="flex items-center gap-2 mt-1">
-                       {product.discountPrice ? (
-                         <>
-                           <span className="text-sm font-semibold text-primary">Rs. {product.discountPrice.toLocaleString()}</span>
-                           <span className="text-xs text-muted-foreground line-through">Rs. {product.price.toLocaleString()}</span>
-                         </>
-                       ) : (
-                         <p className="text-sm text-muted-foreground">Rs. {product.price.toLocaleString()}</p>
-                       )}
-                     </div>
-                  </div>
-               </Link>
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <div className="bg-secondary/50 border-b border-border">
+        <div className="container mx-auto px-4 py-12 md:py-16 text-center">
+          <div className="inline-block px-4 py-1.5 rounded-full bg-secondary border border-border mb-4">
+            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Category</span>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold capitalize tracking-tight text-foreground">
+            {categoryTitle}
+          </h1>
+          <p className="text-muted-foreground mt-4">
+            {products.length} {products.length === 1 ? 'product' : 'products'} found
+          </p>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 py-12 md:py-16">
+        {products.length === 0 ? (
+          <div className="py-20 text-center text-muted-foreground">
+            <p className="text-lg">No products found in this category.</p>
+            <a href="/products" className="text-primary mt-4 inline-block hover:underline">
+              Browse all products →
+            </a>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+            {products.map((product) => (
+              <ProductCard key={product._id} product={product} />
             ))}
-         </div>
-      )}
+          </div>
+        )}
+      </div>
     </div>
   )
 }

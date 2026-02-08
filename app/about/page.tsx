@@ -18,9 +18,9 @@ export default function AboutPage() {
                     <Image
                       src="/J Tech Mart Logo-01.png"
                       alt="JTech Mart Logo"
-                      width={300}
-                      height={300}
-                      className="w-48 h-48 md:w-64 md:h-64 lg:w-80 lg:h-80 mx-auto dark:invert dark:brightness-0 dark:contrast-200 object-contain"
+                      width={320}
+                      height={320}
+                      className="w-48 h-48 md:w-64 md:h-64 lg:w-80 lg:h-80 mx-auto object-contain"
                       priority
                     />
                   </div>

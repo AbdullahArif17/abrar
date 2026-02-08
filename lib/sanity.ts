@@ -60,7 +60,11 @@ export const productsQuery = `*[_type == "product"] | order(_createdAt desc) {
   "category": category,
   "images": images,
   featured,
-  features
+  features,
+  reviewCount,
+  rating,
+  productTags,
+  _createdAt
 }`;
 
 export const featuredProductsQuery = `*[_type == "product" && featured == true] | order(_createdAt desc) {
@@ -74,7 +78,11 @@ export const featuredProductsQuery = `*[_type == "product" && featured == true] 
   "category": category,
   "images": images,
   featured,
-  features
+  features,
+  reviewCount,
+  rating,
+  productTags,
+  _createdAt
 }`;
 
 export const productBySlugQuery = `*[_type == "product" && slug.current == $slug][0] {
@@ -88,7 +96,11 @@ export const productBySlugQuery = `*[_type == "product" && slug.current == $slug
   "category": category,
   "images": images,
   featured,
-  features
+  features,
+  reviewCount,
+  rating,
+  productTags,
+  _createdAt
 }`;
 
 // Fetch Functions
