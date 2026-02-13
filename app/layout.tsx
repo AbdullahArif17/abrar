@@ -36,6 +36,8 @@ export const metadata: Metadata = {
   },
 }
 
+import { MobileBottomNav } from '@/components/MobileBottomNav'
+
 export default function RootLayout({
   children,
 }: {
@@ -47,7 +49,8 @@ export default function RootLayout({
         <ThemeProvider>
         <Navbar />
         <CartDrawer />
-          <main className="min-h-screen bg-background text-foreground">
+        <MobileBottomNav />
+          <main className="min-h-screen bg-background text-foreground pb-20 md:pb-0">
           {children}
         </main>
         <Footer />

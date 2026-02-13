@@ -22,13 +22,13 @@ export function HeroSection() {
             <span className="text-sm font-medium text-primary">Premium Tech Essentials</span>
           </motion.div>
           <motion.h1 
-            className="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight leading-[1.1]"
+            className="text-4xl xs:text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[1.1]"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
           >
-            <span className="text-primary block mb-2">Elevate Your</span>
-            <span className="bg-gradient-to-r from-primary via-primary/90 to-primary bg-clip-text text-transparent block">Lifestyle</span>
+            <span className="text-primary block mb-1 md:mb-2">Elevate Your</span>
+            <span className="bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent block">Lifestyle</span>
           </motion.h1>
           <motion.p 
             className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed"

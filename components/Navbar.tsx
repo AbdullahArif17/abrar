@@ -119,33 +119,50 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Overlay */}
       <AnimatePresence>
-      {isMobileMenuOpen && (
+        {isMobileMenuOpen && (
           <motion.div 
-            className="md:hidden border-t border-border bg-background p-4 absolute w-full left-0"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[100] bg-background/95 backdrop-blur-2xl md:hidden flex flex-col items-center justify-center"
+            initial={{ opacity: 0, x: '100%' }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: '100%' }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
           >
-          <div className="flex flex-col gap-4">
-            {navLinks.map((link) => (
-              <Link 
-                key={link.label} 
-                href={link.href}
-                className={cn(
-                  "text-base font-medium py-2 border-b border-border/50 last:border-0",
-                  isActive(link.href) ? "text-primary" : "text-muted-foreground"
-                )}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
+            <button 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="absolute top-8 right-8 p-3 hover:bg-secondary rounded-full"
+            >
+              <X className="w-8 h-8" />
+            </button>
+
+            <div className="flex flex-col gap-8 text-center">
+              {navLinks.map((link, i) => (
+                <motion.div
+                  key={link.label}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 * i }}
+                >
+                  <Link 
+                    href={link.href}
+                    className={cn(
+                      "text-4xl font-black tracking-tighter transition-all",
+                      isActive(link.href) ? "text-primary scale-110" : "text-muted-foreground hover:text-primary"
+                    )}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+
+            <div className="absolute bottom-20">
+              <ThemeToggle />
+            </div>
           </motion.div>
-      )}
+        )}
       </AnimatePresence>
     </nav>
   )
