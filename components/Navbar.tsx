@@ -28,26 +28,26 @@ export function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/70 shadow-sm">
-      <div className="container mx-auto px-4 md:px-6 lg:px-8 h-24 flex items-center justify-between">
+      <div className="container mx-auto px-4 md:px-6 lg:px-8 h-16 md:h-20 flex items-center justify-between">
         {/* Logo */}
         <motion.div
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
         >
           <Link 
             href="/" 
-            className="flex items-center gap-3 transition-opacity"
+            className="flex items-center gap-2 transition-opacity"
             aria-label="JTech Mart Home"
           >
             <Image
               src="/J Tech Mart Logo-01.png"
               alt="JTech Mart Logo"
-              width={80}
-              height={80}
-              className="h-14 w-auto md:h-[70px] lg:h-20"
+              width={60}
+              height={60}
+              className="h-10 w-auto md:h-12"
               priority
             />
-            <span className="font-extrabold text-2xl md:text-3xl lg:text-4xl tracking-tight text-primary hidden sm:inline-block">
+            <span className="font-black text-xl md:text-2xl tracking-tighter text-primary hidden xs:inline-block">
               JTech Mart
             </span>
         </Link>
