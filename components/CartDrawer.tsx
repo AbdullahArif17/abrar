@@ -34,7 +34,15 @@ export function CartDrawer() {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed right-0 top-0 h-full w-full sm:w-[90vw] sm:max-w-md bg-background border-l border-border shadow-xl z-[70] flex flex-col"
+            drag="x"
+            dragConstraints={{ left: 0, right: 100 }}
+            dragElastic={0.05}
+            onDragEnd={(_, info) => {
+              if (info.offset.x > 100) {
+                toggleCart();
+              }
+            }}
+            className="fixed right-0 top-0 h-full w-full sm:w-[90vw] sm:max-w-md bg-background border-l border-border shadow-xl z-[70] flex flex-col touch-none"
           >
             <div className="flex items-center justify-between p-4 md:p-6 border-b border-border">
               <h2 className="text-lg md:text-xl font-bold text-foreground">Shopping Cart ({items.length})</h2>

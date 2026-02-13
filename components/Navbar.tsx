@@ -123,11 +123,19 @@ export function Navbar() {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div 
-            className="fixed inset-0 z-[100] bg-background/95 backdrop-blur-2xl md:hidden flex flex-col items-center justify-center"
+            className="fixed inset-0 z-[100] bg-background/95 backdrop-blur-2xl md:hidden flex flex-col items-center justify-center touch-none"
             initial={{ opacity: 0, x: '100%' }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            drag="x"
+            dragConstraints={{ left: 0, right: 100 }}
+            dragElastic={0.05}
+            onDragEnd={(_, info) => {
+              if (info.offset.x > 100) {
+                setIsMobileMenuOpen(false);
+              }
+            }}
           >
             <button 
               onClick={() => setIsMobileMenuOpen(false)}
