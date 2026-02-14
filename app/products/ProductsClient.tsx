@@ -15,9 +15,13 @@ export default function ProductsClient({ products }: ProductsClientProps) {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [sortBy, setSortBy] = useState<string>('featured');
   
-  const categories = [
-    { id: 'all', label: 'All Products' },
-  ];
+  const categories = useMemo(() => {
+    const uniqueCategories = [...new Set(products.map(p => p.category).filter(Boolean))];
+    return [
+      { id: 'all', label: 'All Products' },
+      ...uniqueCategories.map(cat => ({ id: cat, label: cat })),
+    ];
+  }, [products]);
 
   const filteredProducts = useMemo(() => {
     let filtered = activeCategory === 'all' 
