@@ -33,12 +33,15 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   if (!product) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4 text-center">
-        <div className="p-6 rounded-3xl bg-secondary/30 max-w-md w-full border border-border">
-          <h1 className="text-3xl font-black text-primary mb-2">Oops!</h1>
-          <p className="text-muted-foreground mb-6">
-            We couldn't find the product you're looking for. It might have been moved or renamed.
+        <div className="p-8 rounded-[2.5rem] bg-secondary/30 max-w-md w-full border border-border/50 backdrop-blur-sm shadow-xl">
+          <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+            <Package className="w-10 h-10 text-primary" />
+          </div>
+          <h1 className="text-3xl font-black text-primary mb-3">Product Missing</h1>
+          <p className="text-muted-foreground mb-8 text-lg font-medium">
+            We couldn't find the product you're looking for. It may have been updated or moved.
           </p>
-          <Link href="/products" className="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-xl font-bold hover:scale-105 transition-transform">
+          <Link href="/products" className="inline-flex items-center justify-center gap-3 bg-primary text-primary-foreground px-8 py-4 rounded-2xl font-bold hover:scale-105 active:scale-95 transition-all shadow-lg hover:shadow-primary/20">
             <ArrowLeft className="w-5 h-5" /> Back to Collection
           </Link>
         </div>

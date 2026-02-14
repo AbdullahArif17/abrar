@@ -237,7 +237,7 @@ export const product = defineType({
       name: 'slug',
       title: 'URL Slug',
       type: 'slug',
-      group: 'seo',
+      group: 'main',
       description: 'Auto-generated from title. Click "Generate".',
       options: {
         source: 'title',
