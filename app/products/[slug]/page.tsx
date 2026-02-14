@@ -32,11 +32,16 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
   if (!product) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-secondary/20">
-        <h1 className="text-2xl font-bold text-primary mb-4">Product Not Found</h1>
-        <Link href="/products" className="text-primary hover:underline flex items-center gap-2">
-          <ArrowLeft className="w-4 h-4" /> Back to Products
-        </Link>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4 text-center">
+        <div className="p-6 rounded-3xl bg-secondary/30 max-w-md w-full border border-border">
+          <h1 className="text-3xl font-black text-primary mb-2">Oops!</h1>
+          <p className="text-muted-foreground mb-6">
+            We couldn't find the product you're looking for. It might have been moved or renamed.
+          </p>
+          <Link href="/products" className="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-xl font-bold hover:scale-105 transition-transform">
+            <ArrowLeft className="w-5 h-5" /> Back to Collection
+          </Link>
+        </div>
       </div>
     );
   }

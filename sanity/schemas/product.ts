@@ -80,7 +80,6 @@ export const product = defineType({
       to: [{ type: 'category' }],
       group: 'main',
       description: 'Select from your store categories.',
-      validation: (Rule) => Rule.required(),
     }),
 
     // ──────────────── PRICING & STOCK ────────────────
