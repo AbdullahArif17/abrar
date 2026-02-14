@@ -6,6 +6,7 @@ import { Product } from '@/lib/products';
 import { getProductImageUrl } from '@/lib/sanity';
 import { ShoppingBag, Star } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { formatPrice } from '@/lib/utils';
 
 interface ProductCardProps {
   product: Product;
@@ -106,15 +107,15 @@ export function ProductCard({ product }: ProductCardProps) {
           {product.discountPrice ? (
             <>
               <span className="font-bold text-sm md:text-xl text-foreground">
-                Rs. {product.discountPrice.toLocaleString()}
+                Rs. {formatPrice(product.discountPrice)}
               </span>
               <span className="text-[10px] md:text-sm text-muted-foreground line-through">
-                Rs. {product.price.toLocaleString()}
+                Rs. {formatPrice(product.price)}
               </span>
             </>
           ) : (
             <span className="font-bold text-sm md:text-xl text-foreground">
-              Rs. {product.price.toLocaleString()}
+              Rs. {formatPrice(product.price)}
             </span>
           )}
         </div>

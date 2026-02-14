@@ -11,6 +11,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 export function MobileBottomNav() {
   const pathname = usePathname();
   const { items, toggleCart } = useCartStore();
+  const [isMounted, setIsMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const cartCount = items.reduce((acc, item) => acc + item.quantity, 0);
 
   const navItems = [
@@ -69,7 +75,7 @@ export function MobileBottomNav() {
             <div className="relative">
               <ShoppingCart className="w-6 h-6" />
               <AnimatePresence>
-                {cartCount > 0 && (
+                {isMounted && cartCount > 0 && (
                   <motion.span 
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}

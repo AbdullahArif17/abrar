@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Check, Truck, Shield, ArrowLeft, Star, Package, Palette, Ruler, Weight, Tag, Info, Box } from 'lucide-react';
 import { AddToCartButton } from '@/components/AddToCartButton';
 import { ProductImageGallery } from '@/components/ProductImageGallery';
+import { formatPrice } from '@/lib/utils';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
@@ -147,25 +148,25 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             </div>
 
             {/* Price Block */}
-            <div className="flex flex-wrap items-end gap-3 pb-4 border-b border-border">
-              {product.discountPrice ? (
-                <>
+              <div className="flex flex-wrap items-baseline gap-3 sm:gap-4 pt-2">
+                {product.discountPrice ? (
+                  <>
+                    <span className="text-3xl sm:text-4xl font-black text-primary">
+                      Rs. {formatPrice(product.discountPrice)}
+                    </span>
+                    <span className="text-lg text-muted-foreground line-through">
+                      Rs. {formatPrice(product.price)}
+                    </span>
+                    <span className="px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-full text-sm font-bold">
+                      {Math.round(((product.price - product.discountPrice) / product.price) * 100)}% OFF
+                    </span>
+                  </>
+                ) : (
                   <span className="text-3xl sm:text-4xl font-black text-primary">
-                    Rs. {product.discountPrice.toLocaleString()}
+                    Rs. {formatPrice(product.price)}
                   </span>
-                  <span className="text-lg text-muted-foreground line-through">
-                    Rs. {product.price.toLocaleString()}
-                  </span>
-                  <span className="px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-full text-sm font-bold">
-                    {Math.round(((product.price - product.discountPrice) / product.price) * 100)}% OFF
-                  </span>
-                </>
-              ) : (
-                <span className="text-3xl sm:text-4xl font-black text-primary">
-                  Rs. {product.price.toLocaleString()}
-                </span>
-              )}
-            </div>
+                )}
+              </div>
 
             {/* Stock Status */}
             <div className="flex items-center gap-3">
@@ -330,12 +331,10 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       {/* Mobile Sticky Add to Cart */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-[55] bg-background/95 backdrop-blur-md border-t border-border p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-[0_-4px_10px_rgba(0,0,0,0.05)] translate-y-[-60px]">
         <div className="container mx-auto flex items-center justify-between gap-3">
-          <div className="flex flex-col">
             <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">Price</span>
             <span className="text-lg font-black text-primary">
-              Rs. {(product.discountPrice || product.price).toLocaleString()}
+              Rs. {formatPrice(product.discountPrice || product.price)}
             </span>
-          </div>
           <AddToCartButton product={product} variant="large" className="flex-1 max-w-[200px] h-11 text-sm font-black" />
         </div>
       </div>

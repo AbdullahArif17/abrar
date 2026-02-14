@@ -59,7 +59,7 @@ const productProjection = `{
   discountPrice,
   description,
   longDescription,
-  "slug": slug.current,
+  "slug": coalesce(slug.current, _id),
   "category": coalesce(category->title, category),
   "categorySlug": category->slug.current,
   images,
@@ -89,7 +89,7 @@ export const productsQuery = `*[_type == "product" && isActive != false] | order
 
 export const featuredProductsQuery = `*[_type == "product" && featured == true && isActive != false] | order(sortOrder asc, _createdAt desc) ${productProjection}`;
 
-export const productBySlugQuery = `*[_type == "product" && slug.current == $slug][0] ${productProjection}`;
+export const productBySlugQuery = `*[_type == "product" && (slug.current == $slug || _id == $slug)][0] ${productProjection}`;
 
 export const productsByCategoryQuery = `*[_type == "product" && category->slug.current == $categorySlug && isActive != false] | order(sortOrder asc, _createdAt desc) ${productProjection}`;
 
