@@ -53,7 +53,7 @@ export function HeroSection() {
             </Link>
             <Link
               href="/about"
-              className="px-8 py-4 rounded-xl font-semibold border border-primary/20 hover:bg-primary/5 hover:border-primary/40 transition-all text-muted-foreground hover:text-primary active:scale-95"
+              className="px-8 py-4 rounded-xl font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/10 transition-all active:scale-95"
             >
               Our Story
             </Link>
