@@ -28,7 +28,6 @@ export default function ProductsClient({ products }: ProductsClientProps) {
     let filtered = activeCategory === 'all' 
       ? products 
       : products.filter(product => {
-          // Normalize both strategy: remove hyphens, lower case
           const pCat = (product.category || '').toLowerCase().replace(/-/g, ' ');
           const fCat = activeCategory.toLowerCase().replace(/-/g, ' ');
           return pCat.includes(fCat) || fCat.includes(pCat);
@@ -59,12 +58,11 @@ export default function ProductsClient({ products }: ProductsClientProps) {
   }, [products, activeCategory, searchQuery, sortBy]);
 
   return (
-    <div className="min-h-screen bg-[#fafafa] dark:bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground transition-colors duration-500">
       {/* Premium Header */}
       <div className="relative isolate overflow-hidden bg-primary pt-20 pb-24 md:pt-28 md:pb-36">
-        {/* Background Decorative Elements */}
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(45rem_50rem_at_top,theme(colors.primary.DEFAULT/20),theme(colors.background))] opacity-20" />
-        <div className="absolute top-0 right-0 -z-10 w-full h-full bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(45rem_50rem_at_top,theme(colors.primary.DEFAULT/40),theme(colors.background))] opacity-30" />
+        <div className="absolute top-0 right-0 -z-10 w-full h-full bg-gradient-to-b from-primary/10 via-transparent to-transparent" />
         
         <div className="container mx-auto px-4 text-center">
           <motion.div
@@ -100,7 +98,7 @@ export default function ProductsClient({ products }: ProductsClientProps) {
             transition={{ delay: 0.2, duration: 0.8 }}
           >
             {/* Search */}
-            <div className="group relative bg-white dark:bg-card p-2 rounded-[2rem] border border-border/50 shadow-xl hover:shadow-2xl hover:border-primary/20 transition-all duration-500">
+            <div className="group relative bg-card/60 backdrop-blur-xl p-2 rounded-[2rem] border border-border/50 shadow-2xl hover:border-primary/30 transition-all duration-500">
               <div className="relative flex items-center">
                 <Search className="absolute left-4 w-5 h-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
                 <input
@@ -108,13 +106,13 @@ export default function ProductsClient({ products }: ProductsClientProps) {
                   placeholder="Search gear..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-6 py-4 rounded-[1.5rem] bg-secondary/30 text-base focus:outline-none transition-all text-foreground placeholder:text-muted-foreground font-medium"
+                  className="w-full pl-12 pr-6 py-4 rounded-[1.5rem] bg-background/50 text-base focus:outline-none transition-all text-foreground placeholder:text-muted-foreground font-medium border border-transparent focus:border-primary/20"
                 />
               </div>
             </div>
 
             {/* Categories */}
-            <div className="bg-white dark:bg-card p-8 rounded-[2.5rem] border border-border/50 shadow-xl">
+            <div className="bg-card/60 backdrop-blur-xl p-8 rounded-[2.5rem] border border-border/50 shadow-2xl">
               <div className="flex items-center gap-3 mb-8">
                 <div className="p-2 bg-primary/10 rounded-xl">
                   <Filter className="w-5 h-5 text-primary" />
@@ -130,7 +128,7 @@ export default function ProductsClient({ products }: ProductsClientProps) {
                     className={`group flex items-center justify-between px-5 py-4 rounded-2xl text-sm transition-all duration-300 ${
                       activeCategory === category.id
                         ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20 scale-[1.02]'
-                        : 'bg-secondary/30 text-muted-foreground hover:bg-secondary/50 hover:text-foreground'
+                        : 'bg-secondary/20 text-muted-foreground hover:bg-secondary/40 hover:text-foreground'
                     }`}
                   >
                     <span className="font-bold capitalize">{category.label === 'All Products' ? 'All Items' : category.label}</span>
@@ -147,17 +145,17 @@ export default function ProductsClient({ products }: ProductsClientProps) {
 
           {/* Product Grid Area */}
           <div className="flex-1 w-full space-y-8">
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-6 bg-white dark:bg-card px-8 py-5 rounded-[2rem] border border-border/50 shadow-xl">
-              <p className="text-sm text-muted-foreground font-bold uppercase tracking-widest">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-6 bg-card/60 backdrop-blur-xl px-8 py-5 rounded-[2rem] border border-border/50 shadow-2xl">
+              <p className="text-sm text-muted-foreground font-bold uppercase tracking-widest leading-none">
                 <span className="text-primary">{filteredProducts.length}</span> Objects Found
               </p>
               
               <div className="flex items-center gap-4">
-                <span className="text-xs font-black uppercase tracking-widest text-muted-foreground/60">Sort By</span>
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60">Sort By</span>
                 <select 
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="bg-secondary/50 border-none rounded-xl text-sm font-bold py-2.5 px-6 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer hover:bg-secondary/80"
+                  className="bg-background/50 border border-border/50 rounded-xl text-sm font-bold py-2.5 px-6 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer hover:bg-background/80"
                 >
                   <option value="featured">👑 Selection</option>
                   <option value="newest">✨ Fresh arrivals</option>
@@ -168,19 +166,19 @@ export default function ProductsClient({ products }: ProductsClientProps) {
             </div>
 
             {filteredProducts.length > 0 ? (
-              <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8">
                 {filteredProducts.map((product) => (
                   <ProductCard key={product._id || product.id} product={product} />
                 ))}
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center py-20 bg-card rounded-2xl border border-border border-dashed">
-                <div className="bg-secondary/50 p-4 rounded-full mb-4">
-                  <Search className="w-8 h-8 text-muted-foreground" />
+              <div className="flex flex-col items-center justify-center py-24 bg-card/40 backdrop-blur-sm rounded-[2.5rem] border border-border border-dashed">
+                <div className="bg-primary/10 p-6 rounded-full mb-6">
+                  <Search className="w-10 h-10 text-primary opacity-50" />
                 </div>
-                <h3 className="text-lg font-bold text-foreground mb-2">No products found</h3>
-                <p className="text-muted-foreground mb-6 text-center max-w-xs">
-                  We couldn't find any products matching your search criteria.
+                <h3 className="text-2xl font-black text-foreground mb-3">No Gear Found</h3>
+                <p className="text-muted-foreground mb-8 text-center max-w-sm font-medium">
+                  We couldn't find any equipment matching your criteria. Try adjusting your search or filters.
                 </p>
                 <button 
                   onClick={() => {
@@ -188,9 +186,9 @@ export default function ProductsClient({ products }: ProductsClientProps) {
                     setActiveCategory('all')
                     setSortBy('featured')
                   }}
-                  className="px-6 py-2 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors"
+                  className="px-8 py-3.5 bg-primary text-primary-foreground rounded-2xl font-black text-sm hover:scale-105 active:scale-95 transition-all shadow-xl shadow-primary/20"
                 >
-                  Clear all filters
+                  Clear All Filters
                 </button>
               </div>
             )}
