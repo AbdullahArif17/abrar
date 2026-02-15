@@ -4,8 +4,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Product } from '@/lib/products';
 import { getProductImageUrl } from '@/lib/sanity';
-import { ShoppingBag, Star } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { ShoppingBag, Star, ArrowRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { formatPrice } from '@/lib/utils';
 
 interface ProductCardProps {
@@ -13,129 +13,123 @@ interface ProductCardProps {
 }
 
 const tagStyles: Record<string, string> = {
-  bestseller: 'bg-orange-500 text-white',
-  new: 'bg-green-500 text-white',
-  limited: 'bg-red-500 text-white',
-  hot: 'bg-gradient-to-r from-orange-500 to-red-500 text-white',
+  bestseller: 'bg-orange-500/90 text-white backdrop-blur-md',
+  new: 'bg-emerald-500/90 text-white backdrop-blur-md',
+  limited: 'bg-rose-500/90 text-white backdrop-blur-md',
+  hot: 'bg-gradient-to-r from-orange-500/90 to-red-600/90 text-white backdrop-blur-md',
 }
 
 const tagLabels: Record<string, string> = {
-  bestseller: '🔥 Best Seller',
-  new: '✨ New',
+  bestseller: '🔥 Bestseller',
+  new: '✨ New Arrival',
   limited: '⏰ Limited',
-  hot: '🔥 Hot',
+  hot: '🔥 Hot Deal',
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-    const imageUrl = getProductImageUrl(product);
-    
+  const imageUrl = getProductImageUrl(product);
+  
   return (
     <motion.div 
-      className="group relative bg-card border border-border/50 rounded-3xl overflow-hidden hover:shadow-2xl hover:border-primary/30 transition-all duration-500 backdrop-blur-sm"
-      whileHover={{ y: -12, scale: 1.02 }}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      className="group relative bg-card/40 border border-border/40 rounded-[2.5rem] overflow-hidden hover:shadow-[0_22px_70px_-20px_rgba(0,0,0,0.15)] transition-all duration-700 backdrop-blur-sm"
+      initial={{ opacity: 0, scale: 0.95 }}
+      whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.4 }}
+      whileHover={{ y: -8 }}
     >
-      <div className="aspect-square relative overflow-hidden bg-gradient-to-br from-secondary/30 to-secondary/10">
+      <Link href={`/products/${product.slug}`} className="block relative aspect-square overflow-hidden rounded-t-[2.5rem]">
         <Image
           src={imageUrl}
           alt={product.title || product.name || 'Product'}
           fill
-          className="object-cover object-center group-hover:scale-110 transition-transform duration-700"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="object-cover object-center group-hover:scale-110 transition-transform duration-[1.2s] ease-out"
+          sizes="(max-width: 768px) 50vw, 33vw"
           loading="lazy"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         
-        {/* Tags Row */}
-        <div className="absolute top-3 left-3 right-3 flex flex-wrap gap-2 z-10">
+        {/* Shimmer Overlay on Hover */}
+        <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+        
+        {/* Soft Shadow at bottom of image */}
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+
+        {/* Tags */}
+        <div className="absolute top-4 left-4 right-4 flex flex-wrap gap-2 z-10">
           {product.discountPrice && (
             <motion.span 
-              className="bg-red-500 text-white px-2.5 py-1 rounded-full text-[10px] font-bold shadow-lg"
-              initial={{ scale: 0 }}
-              whileInView={{ scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ type: "spring", stiffness: 500, damping: 15 }}
+              className="bg-red-500 text-white px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-tighter shadow-xl border border-white/20"
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.2 }}
             >
-              {Math.round(((product.price - product.discountPrice) / product.price) * 100)}% OFF
+              {Math.round(((product.price - product.discountPrice) / product.price) * 100)}% Save
             </motion.span>
           )}
-          {product.productTags?.slice(0, 2).map((tag) => (
+          {product.productTags?.slice(0, 1).map((tag) => (
             <span 
               key={tag}
-              className={`px-2.5 py-1 rounded-full text-[10px] font-bold shadow-lg ${tagStyles[tag] || 'bg-primary text-white'}`}
+              className={`px-3 py-1.5 rounded-full text-[10px] font-bold shadow-xl border border-white/10 ${tagStyles[tag] || 'bg-primary/90 text-white backdrop-blur-md'}`}
             >
               {tagLabels[tag] || tag}
             </span>
           ))}
         </div>
-      </div>
+      </Link>
       
-      <div className="p-3 md:p-6 flex flex-col gap-2 md:gap-3">
-        <div className="flex justify-between items-start gap-2">
-          <div className="flex-1 min-w-0">
-            <p className="text-[8px] md:text-[10px] text-muted-foreground font-semibold uppercase tracking-wider mb-1 md:mb-2 px-2 py-0.5 md:py-1 bg-secondary rounded-full inline-block">
-              {product.category?.replace('-', ' ')}
-            </p>
-            <h3 className="font-bold text-sm md:text-lg text-foreground tracking-tight mb-0.5 md:mb-1 group-hover:text-primary transition-colors line-clamp-2 leading-tight">
+      <div className="p-5 md:p-7 flex flex-col gap-3">
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/60">
+              {product.category?.replace('-', ' ') || 'Premium'}
+            </span>
+            {product.rating && (
+              <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-yellow-500/10 border border-yellow-500/20">
+                <Star className="w-3 h-3 text-yellow-500 fill-current" />
+                <span className="text-[10px] font-bold text-yellow-600">{product.rating.toFixed(1)}</span>
+              </div>
+            )}
+          </div>
+          
+          <Link href={`/products/${product.slug}`}>
+            <h3 className="font-bold text-base md:text-xl text-foreground tracking-tight group-hover:text-primary transition-colors duration-300 line-clamp-1">
               {product.title || product.name}
             </h3>
-          </div>
+          </Link>
         </div>
 
-        {/* Reviews */}
-        {(product.reviewCount || product.rating) && (
-          <div className="flex items-center gap-1.5 md:gap-2 text-[10px] md:text-xs">
-            {product.rating && (
-              <span className="flex items-center gap-0.5 text-yellow-500 font-medium">
-                <Star className="w-3 h-3 md:w-3.5 md:h-3.5 fill-current" />
-                {product.rating.toFixed(1)}
-              </span>
-            )}
-            {product.reviewCount && product.reviewCount > 0 && (
-              <span className="text-muted-foreground hidden xs:inline-block">
-                ({product.reviewCount})
-              </span>
-            )}
-          </div>
-        )}
-
-        {/* Price */}
-        <div className="flex items-baseline gap-1.5 md:gap-2 flex-wrap">
+        {/* Price Section */}
+        <div className="flex items-baseline gap-2 pt-1">
           {product.discountPrice ? (
             <>
-              <span className="font-bold text-sm md:text-xl text-foreground">
+              <span className="font-black text-lg md:text-2xl text-primary tracking-tight">
                 Rs. {formatPrice(product.discountPrice)}
               </span>
-              <span className="text-[10px] md:text-sm text-muted-foreground line-through">
+              <span className="text-xs md:text-sm text-muted-foreground/60 line-through font-medium">
                 Rs. {formatPrice(product.price)}
               </span>
             </>
           ) : (
-            <span className="font-bold text-sm md:text-xl text-foreground">
+            <span className="font-black text-lg md:text-2xl text-primary tracking-tight">
               Rs. {formatPrice(product.price)}
             </span>
           )}
         </div>
-        
-        <p className="hidden md:block text-xs text-muted-foreground line-clamp-2 leading-relaxed">
-          {product.description}
-        </p>
 
-        <div className="mt-auto pt-2 md:pt-4 border-t border-border/50">
+        {/* Action Button */}
+        <div className="pt-3 mt-1">
           <Link
             href={`/products/${product.slug}`}
-            className="w-full flex items-center justify-center gap-1.5 md:gap-2 bg-primary text-primary-foreground py-2 md:py-3 px-3 md:px-4 rounded-xl text-xs md:text-sm font-semibold hover:bg-primary/90 transition-all hover:scale-[1.02] active:scale-[0.98] shadow-md hover:shadow-xl group/btn dark:bg-white dark:text-black dark:hover:bg-gray-200 dark:font-bold"
+            className="group/btn relative w-full overflow-hidden bg-primary text-primary-foreground py-3.5 px-6 rounded-2xl text-xs md:text-sm font-black transition-all duration-500 hover:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)] active:scale-[0.97] dark:bg-white dark:text-black dark:hover:bg-gray-100 flex items-center justify-center gap-2"
           >
-            <ShoppingBag className="w-3.5 h-3.5 md:w-4 md:h-4 group-hover/btn:scale-110 transition-transform" />
-            <span className="hidden xs:inline">{product.discountPrice ? 'Limited Deal' : 'Buy Now'}</span>
-            <span className="xs:hidden">Buy</span>
+            <div className="absolute inset-0 w-1/3 h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover/btn:translate-x-[300%] transition-transform duration-1000 ease-in-out" />
+            <ShoppingBag className="w-4 h-4 group-hover/btn:scale-110 transition-transform duration-300" />
+            <span className="relative">
+              {product.discountPrice ? 'Limited Deal' : 'Explore Now'}
+            </span>
+            <ArrowRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover/btn:opacity-100 group-hover/btn:translate-x-0 transition-all duration-300" />
           </Link>
         </div>
       </div>
     </motion.div>
   );
 }
-

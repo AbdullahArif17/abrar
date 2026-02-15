@@ -4,7 +4,8 @@ import { useState, useMemo } from 'react';
 import { ProductCard } from '@/components/ProductCard';
 import { ProductCardSkeleton } from '@/components/ProductCardSkeleton';
 import { Product } from '@/lib/products';
-import { Filter, Search } from 'lucide-react';
+import { Filter, Search, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface ProductsClientProps {
   products: Product[];
@@ -58,82 +59,110 @@ export default function ProductsClient({ products }: ProductsClientProps) {
   }, [products, activeCategory, searchQuery, sortBy]);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      {/* Header */}
-      <div className="bg-secondary/30 border-b border-border">
-        <div className="container mx-auto px-4 py-12 md:py-16 text-center">
-          <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-4">
-            <span className="text-xs font-semibold text-primary uppercase tracking-wider">Premium Gear</span>
-          </div>
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-foreground mb-4">
-            Our Collection
-          </h1>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Explore our premium range of smart devices designed to enhance your daily life.
-          </p>
+    <div className="min-h-screen bg-[#fafafa] dark:bg-background text-foreground">
+      {/* Premium Header */}
+      <div className="relative isolate overflow-hidden bg-primary pt-20 pb-24 md:pt-28 md:pb-36">
+        {/* Background Decorative Elements */}
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(45rem_50rem_at_top,theme(colors.primary.DEFAULT/20),theme(colors.background))] opacity-20" />
+        <div className="absolute top-0 right-0 -z-10 w-full h-full bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
+        
+        <div className="container mx-auto px-4 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-6 mx-auto">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+              </span>
+              <span className="text-[10px] font-black text-white uppercase tracking-[0.2em]">New Season Drops</span>
+            </div>
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-white mb-6 uppercase">
+              The <span className="text-secondary">Collection</span>
+            </h1>
+            <p className="text-white/70 text-lg md:text-xl max-w-2xl mx-auto font-medium leading-relaxed">
+              Curated precision instruments and premium hardware for the modern enthusiast. 
+              Engineered for excellence, designed for life.
+            </p>
+          </motion.div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8 md:py-12">
+      <div className="container mx-auto px-4 -mt-16 relative z-10 pb-20">
         <div className="flex flex-col lg:flex-row gap-8 items-start">
           {/* Filters Sidebar */}
-          <div className="w-full lg:w-64 flex-shrink-0 space-y-6">
-            
+          <motion.div 
+            className="w-full lg:w-72 flex-shrink-0 space-y-8"
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+          >
             {/* Search */}
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input
-                type="text"
-                placeholder="Search products..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-border bg-card text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-foreground placeholder:text-muted-foreground"
-              />
+            <div className="group relative bg-white dark:bg-card p-2 rounded-[2rem] border border-border/50 shadow-xl hover:shadow-2xl hover:border-primary/20 transition-all duration-500">
+              <div className="relative flex items-center">
+                <Search className="absolute left-4 w-5 h-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                <input
+                  type="text"
+                  placeholder="Search gear..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-12 pr-6 py-4 rounded-[1.5rem] bg-secondary/30 text-base focus:outline-none transition-all text-foreground placeholder:text-muted-foreground font-medium"
+                />
+              </div>
             </div>
 
             {/* Categories */}
-            <div className="bg-card p-5 rounded-2xl border border-border">
-              <div className="flex items-center gap-2 mb-4 text-foreground">
-                <Filter className="w-5 h-5 text-primary" />
-                <h3 className="!text-lg font-bold">Categories</h3>
+            <div className="bg-white dark:bg-card p-8 rounded-[2.5rem] border border-border/50 shadow-xl">
+              <div className="flex items-center gap-3 mb-8">
+                <div className="p-2 bg-primary/10 rounded-xl">
+                  <Filter className="w-5 h-5 text-primary" />
+                </div>
+                <h3 className="text-xl font-black uppercase tracking-tight text-foreground">Filter By</h3>
               </div>
               
-              <div className="flex flex-row lg:flex-col gap-1 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0 scrollbar-hide">
+              <div className="flex flex-row lg:flex-col gap-2 overflow-x-auto lg:overflow-visible pb-4 lg:pb-0 scrollbar-hide">
                 {categories.map((category) => (
                   <button
                     key={category.id}
                     onClick={() => setActiveCategory(category.id)}
-                    className={`text-left px-3 py-2 rounded-lg text-sm transition-all whitespace-nowrap ${
+                    className={`group flex items-center justify-between px-5 py-4 rounded-2xl text-sm transition-all duration-300 ${
                       activeCategory === category.id
-                        ? 'bg-secondary font-bold text-primary shadow-sm ring-1 ring-border'
-                        : 'text-muted-foreground font-medium hover:bg-secondary/50 hover:text-foreground'
+                        ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20 scale-[1.02]'
+                        : 'bg-secondary/30 text-muted-foreground hover:bg-secondary/50 hover:text-foreground'
                     }`}
                   >
-                    {category.id === 'all' ? 'All Products' : category.label}
+                    <span className="font-bold capitalize">{category.label === 'All Products' ? 'All Items' : category.label}</span>
+                    <ArrowRight className={`w-4 h-4 transition-all duration-300 ${
+                      activeCategory === category.id 
+                        ? 'opacity-100 translate-x-0' 
+                        : 'opacity-0 -translate-x-2'
+                    }`} />
                   </button>
                 ))}
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          {/* Product Grid */}
-          <div className="flex-1 w-full">
-            <div className="mb-6 flex flex-col sm:flex-row items-center justify-between gap-4 bg-card p-4 rounded-xl border border-border">
-              <p className="text-sm text-muted-foreground font-medium">
-                Showing <span className="text-foreground font-bold">{filteredProducts.length}</span> results
+          {/* Product Grid Area */}
+          <div className="flex-1 w-full space-y-8">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-6 bg-white dark:bg-card px-8 py-5 rounded-[2rem] border border-border/50 shadow-xl">
+              <p className="text-sm text-muted-foreground font-bold uppercase tracking-widest">
+                <span className="text-primary">{filteredProducts.length}</span> Objects Found
               </p>
               
-              <div className="flex items-center gap-3">
-                <label className="text-sm text-muted-foreground hidden sm:block">Sort by:</label>
+              <div className="flex items-center gap-4">
+                <span className="text-xs font-black uppercase tracking-widest text-muted-foreground/60">Sort By</span>
                 <select 
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="bg-background border border-border rounded-lg text-sm py-1.5 px-3 focus:outline-none focus:ring-2 focus:ring-primary/20"
+                  className="bg-secondary/50 border-none rounded-xl text-sm font-bold py-2.5 px-6 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer hover:bg-secondary/80"
                 >
-                  <option value="featured">Featured</option>
-                  <option value="newest">Newest Arrivals</option>
-                  <option value="price-asc">Price: Low to High</option>
-                  <option value="price-desc">Price: High to Low</option>
+                  <option value="featured">👑 Selection</option>
+                  <option value="newest">✨ Fresh arrivals</option>
+                  <option value="price-asc">📉 Lowest Price</option>
+                  <option value="price-desc">📈 Highest Price</option>
                 </select>
               </div>
             </div>
