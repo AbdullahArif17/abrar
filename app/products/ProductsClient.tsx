@@ -173,20 +173,22 @@ export default function ProductsClient({ products }: ProductsClientProps) {
                 </div>
               </div>
               
-              <div className="flex items-center gap-5 bg-card px-2 py-2 rounded-2xl border border-border shadow-sm">
-                <span className="text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-3">Sorting</span>
-                <div className="h-6 w-[1px] bg-border" />
-                <select 
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="bg-transparent text-[11px] font-black uppercase tracking-widest py-2 px-4 focus:outline-none cursor-pointer hover:text-primary transition-colors appearance-none"
-                >
-                  <option value="featured">👑 Selection</option>
-                  <option value="newest">✨ Fresh</option>
-                  <option value="price-asc">📉 Low Price</option>
-                  <option value="price-desc">📈 High Price</option>
-                </select>
-                <ChevronRight className="w-4 h-4 text-muted-foreground mr-3 rotate-90" />
+              <div className="flex items-center gap-4 bg-card px-4 py-2 rounded-2xl border border-border shadow-sm group hover:border-primary/30 transition-all">
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground hidden xs:inline-block">Sort Engine</span>
+                <div className="h-6 w-[1px] bg-border hidden xs:block" />
+                <div className="relative flex items-center">
+                  <select 
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className="bg-transparent text-foreground text-[11px] font-black uppercase tracking-tight py-2 pl-2 pr-8 focus:outline-none cursor-pointer hover:text-primary transition-colors appearance-none min-w-[150px]"
+                  >
+                    <option value="featured" className="bg-card text-foreground">👑 Selection</option>
+                    <option value="newest" className="bg-card text-foreground">✨ New Arrivals</option>
+                    <option value="price-asc" className="bg-card text-foreground">📉 Low to High</option>
+                    <option value="price-desc" className="bg-card text-foreground">📈 High to Low</option>
+                  </select>
+                  <ChevronRight className="absolute right-0 w-4 h-4 text-muted-foreground rotate-90 pointer-events-none group-hover:text-primary transition-colors" />
+                </div>
               </div>
             </div>
 
