@@ -4,8 +4,9 @@ import { useState, useMemo } from 'react';
 import { ProductCard } from '@/components/ProductCard';
 import { ProductCardSkeleton } from '@/components/ProductCardSkeleton';
 import { Product } from '@/lib/products';
-import { Filter, Search, ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Filter, Search, ChevronRight, SlidersHorizontal, PackageSearch } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 interface ProductsClientProps {
   products: Product[];
@@ -58,142 +59,174 @@ export default function ProductsClient({ products }: ProductsClientProps) {
   }, [products, activeCategory, searchQuery, sortBy]);
 
   return (
-    <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
-      {/* Premium Header - Deep Dark for both modes for premium feel */}
-      <div className="relative isolate overflow-hidden bg-[#0a0a0a] pt-24 pb-32 md:pt-32 md:pb-40">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(45rem_50rem_at_top,theme(colors.primary.DEFAULT/30),theme(colors.background))] opacity-40" />
-        <div className="absolute top-0 right-0 -z-10 w-full h-full bg-gradient-to-b from-white/10 via-transparent to-transparent" />
-        
-        <div className="container mx-auto px-4 text-center">
+    <div className="min-h-screen bg-background transition-colors duration-500">
+      {/* Cinematic Header - Matches Hero Exactly */}
+      <section className="relative pt-24 pb-20 md:pt-40 md:pb-32 overflow-hidden bg-gradient-to-br from-background via-secondary/10 to-background">
+        {/* Background Animation Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
+            <div className="absolute top-0 left-1/4 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[140px] animate-pulse" />
+            <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-primary/3 rounded-full blur-[120px]" />
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
+            className="max-w-5xl mx-auto"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 backdrop-blur-md border border-white/10 mb-8 mx-auto">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
-              </span>
-              <span className="text-[10px] font-black text-white/90 uppercase tracking-[0.2em]">New Season Drops</span>
-            </div>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-8 uppercase leading-none">
-              The <span className="bg-gradient-to-r from-orange-400 to-rose-500 bg-clip-text text-transparent">Collection</span>
+            <motion.div 
+              className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-primary/10 border border-primary/20 mb-8 backdrop-blur-md shadow-2xl shadow-primary/5"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              <div className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+              </div>
+              <span className="text-[11px] font-black tracking-[0.25em] text-primary uppercase">Elite Database Active</span>
+            </motion.div>
+            
+            <h1 className="text-5xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.95] uppercase flex flex-col items-center">
+              <span className="text-primary opacity-20 text-[0.4em] font-bold tracking-[0.5em] mb-2">Accessing</span>
+              <span className="text-primary mb-1 md:mb-3">The Whole</span>
+              <span className="bg-gradient-to-r from-primary via-primary/70 to-primary bg-clip-text text-transparent italic font-light lowercase">Inventory</span>
             </h1>
-            <p className="text-white/60 text-lg md:text-xl max-w-2xl mx-auto font-medium leading-relaxed italic">
-              "Precision instruments for the modern digital explorer."
-            </p>
+            
+            <motion.p 
+              className="mt-10 text-lg md:text-2xl text-muted-foreground max-w-2xl mx-auto font-medium leading-relaxed opacity-80"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+            >
+              Browsing our high-precision hardware ecosystem. 
+              Find the specific unit that completes your configuration.
+            </motion.p>
           </motion.div>
         </div>
-      </div>
+      </section>
 
-      <div className="container mx-auto px-4 -mt-20 relative z-10 pb-24 md:pb-32">
-        <div className="flex flex-col lg:flex-row gap-10 items-start">
-          {/* Filters Sidebar */}
-          <motion.div 
-            className="w-full lg:w-80 flex-shrink-0 space-y-10"
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2, duration: 0.8 }}
-          >
-            {/* Search */}
-            <div className="group relative bg-card dark:bg-[#121212] backdrop-blur-2xl p-2 rounded-[2.5rem] border border-border/80 shadow-2xl hover:border-primary transition-all duration-500">
-              <div className="relative flex items-center">
-                <Search className="absolute left-5 w-5 h-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+      <div className="container mx-auto px-4 py-20 md:py-32">
+        <div className="flex flex-col lg:flex-row gap-16 items-start">
+          {/* Elite Control Panel (Sidebar) */}
+          <aside className="w-full lg:w-80 flex-shrink-0 space-y-12">
+            {/* Search - Ultra Sharp */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 px-2">
+                <Search className="w-4 h-4 text-primary" />
+                <h4 className="text-[10px] font-black text-primary/40 uppercase tracking-[0.4em]">Search Log</h4>
+              </div>
+              <div className="relative group overflow-hidden rounded-[1.5rem] border border-border shadow-xl hover:border-primary/50 transition-all duration-300">
                 <input
                   type="text"
-                  placeholder="ID search or name..."
+                  placeholder="ID scan or keyword..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-14 pr-7 py-5 rounded-[2rem] bg-background/40 text-base focus:outline-none transition-all text-foreground placeholder:text-muted-foreground/60 font-bold border border-transparent focus:border-primary/10"
+                  className="w-full pl-6 pr-6 py-5 bg-card text-sm focus:outline-none placeholder:text-muted-foreground/30 font-bold"
                 />
+                <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-primary group-focus-within:w-full transition-all duration-700" />
               </div>
             </div>
 
-            {/* Categories */}
-            <div className="bg-card dark:bg-[#121212] backdrop-blur-2xl p-8 rounded-[3rem] border border-border/80 shadow-2xl">
-              <div className="flex items-center gap-4 mb-10">
-                <div className="p-3 bg-primary text-primary-foreground rounded-2xl shadow-xl">
-                  <Filter className="w-5 h-5" />
-                </div>
-                <h3 className="text-xl font-black uppercase tracking-tight text-foreground">Select Type</h3>
+            {/* Category Scan */}
+            <div className="space-y-6">
+               <div className="flex items-center gap-2 px-2">
+                <SlidersHorizontal className="w-4 h-4 text-primary" />
+                <h4 className="text-[10px] font-black text-primary/40 uppercase tracking-[0.4em]">Filter Bank</h4>
               </div>
-              
               <div className="flex flex-row lg:flex-col gap-3 overflow-x-auto lg:overflow-visible pb-4 lg:pb-0 scrollbar-hide">
                 {categories.map((category) => (
                   <button
                     key={category.id}
                     onClick={() => setActiveCategory(category.id)}
-                    className={`group flex items-center justify-between px-6 py-5 rounded-[1.5rem] text-sm transition-all duration-500 ${
-                      activeCategory === category.id
-                        ? 'bg-primary text-primary-foreground shadow-2xl shadow-primary/30 scale-[1.05] z-10'
-                        : 'bg-secondary/30 text-muted-foreground hover:bg-secondary/60 hover:text-foreground'
-                    }`}
+                    className={cn(
+                        "group flex items-center justify-between px-6 py-4 rounded-2xl text-xs font-black uppercase tracking-widest transition-all relative border overflow-hidden",
+                        activeCategory === category.id
+                        ? "bg-primary text-primary-foreground border-primary shadow-2xl shadow-primary/20 scale-[1.03] z-10"
+                        : "bg-card text-muted-foreground border-border hover:border-primary/30 hover:text-primary"
+                    )}
                   >
-                    <span className="font-black capitalize tracking-tight">{category.label === 'All Products' ? 'All Units' : category.label}</span>
-                    <ArrowRight className={`w-4 h-4 transition-all duration-500 ${
-                      activeCategory === category.id 
-                        ? 'opacity-100 translate-x-0' 
-                        : 'opacity-0 -translate-x-4'
-                    }`} />
+                    <span className="relative z-10">{category.label === 'All Products' ? 'All Units' : category.label}</span>
+                    <ChevronRight className={cn(
+                      "w-4 h-4 transition-all duration-500 relative z-10",
+                      activeCategory === category.id ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"
+                    )} />
                   </button>
                 ))}
               </div>
             </div>
-          </motion.div>
+          </aside>
 
-          {/* Product Grid Area */}
-          <div className="flex-1 w-full space-y-10">
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-8 bg-card dark:bg-[#121212] backdrop-blur-2xl px-10 py-6 rounded-[2.5rem] border border-border/80 shadow-2xl">
-              <p className="text-xs font-black uppercase tracking-[0.3em] text-foreground flex items-center gap-3">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.5)]"></span>
-                <span className="text-primary/100">{filteredProducts.length}</span> Active Items
-              </p>
+          {/* Visualization Grid (Main Content) */}
+          <main className="flex-1 w-full space-y-12">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-8 pb-10 border-b border-border/60">
+              <div className="flex items-center gap-4">
+                <div className="h-10 w-10 bg-primary/5 rounded-2xl flex items-center justify-center border border-primary/10">
+                    <PackageSearch className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                   <p className="text-xs font-black text-primary/40 uppercase tracking-[0.2em] mb-0.5">Scanning Results</p>
+                   <p className="text-xl font-black tracking-tighter text-foreground leading-none">
+                     {filteredProducts.length} <span className="text-primary italic font-light">Units detected</span>
+                   </p>
+                </div>
+              </div>
               
-              <div className="flex items-center gap-5">
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/80">Indexing</span>
+              <div className="flex items-center gap-5 bg-card px-2 py-2 rounded-2xl border border-border shadow-sm">
+                <span className="text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-3">Sorting</span>
+                <div className="h-6 w-[1px] bg-border" />
                 <select 
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="bg-background/80 dark:bg-[#1a1a1a] border border-border/50 rounded-2xl text-[11px] font-black uppercase tracking-tight py-3 px-6 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer hover:bg-background shadow-sm"
+                  className="bg-transparent text-[11px] font-black uppercase tracking-widest py-2 px-4 focus:outline-none cursor-pointer hover:text-primary transition-colors appearance-none"
                 >
                   <option value="featured">👑 Selection</option>
                   <option value="newest">✨ Fresh</option>
-                  <option value="price-asc">📉 Low-High</option>
-                  <option value="price-desc">📈 High-Low</option>
+                  <option value="price-asc">📉 Low Price</option>
+                  <option value="price-desc">📈 High Price</option>
                 </select>
+                <ChevronRight className="w-4 h-4 text-muted-foreground mr-3 rotate-90" />
               </div>
             </div>
 
-            {filteredProducts.length > 0 ? (
-              <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-10">
-                {filteredProducts.map((product) => (
-                  <ProductCard key={product._id || product.id} product={product} />
-                ))}
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center py-28 bg-card/60 backdrop-blur-xl rounded-[3rem] border border-border border-dashed shadow-inner">
-                <div className="bg-primary/5 p-8 rounded-full mb-8 relative">
-                    <div className="absolute inset-0 bg-primary/10 animate-ping rounded-full opacity-20"></div>
-                   <Search className="w-12 h-12 text-primary opacity-40 relative z-10" />
-                </div>
-                <h3 className="text-3xl font-black text-foreground mb-4 tracking-tighter">Null Result</h3>
-                <p className="text-muted-foreground mb-10 text-center max-w-sm font-bold text-base leading-relaxed">
-                  No equipment matched your current scan parameters. Reset filters to continue.
-                </p>
-                <button 
-                  onClick={() => {
-                    setSearchQuery('')
-                    setActiveCategory('all')
-                    setSortBy('featured')
-                  }}
-                  className="px-10 py-4 bg-primary text-primary-foreground rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-[0_20px_40px_-10px_rgba(0,0,0,0.3)] shadow-primary/20"
+            <AnimatePresence mode="popLayout">
+              {filteredProducts.length > 0 ? (
+                <motion.div 
+                  layout
+                  className="grid grid-cols-2 lg:grid-cols-3 gap-6 md:gap-14"
                 >
-                  Clear Feed Scan
-                </button>
-              </div>
-            )}
-          </div>
+                  {filteredProducts.map((product) => (
+                    <ProductCard key={product._id || product.id} product={product} />
+                  ))}
+                </motion.div>
+              ) : (
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex flex-col items-center justify-center py-40 bg-card rounded-[3.5rem] border border-dashed border-border shadow-inner"
+                >
+                  <div className="w-24 h-24 bg-primary/5 rounded-full flex items-center justify-center mb-8 border border-primary/10">
+                    <PackageSearch className="w-10 h-10 text-primary opacity-30" />
+                  </div>
+                  <h3 className="text-3xl font-black text-foreground mb-4 tracking-tighter uppercase">No Signal Found</h3>
+                  <p className="text-muted-foreground mb-12 max-w-sm mx-auto font-bold text-lg leading-relaxed px-6">
+                    The requested data stream returned null. Re-calibrate your scan parameters.
+                  </p>
+                  <button 
+                    onClick={() => {
+                      setSearchQuery('')
+                      setActiveCategory('all')
+                      setSortBy('featured')
+                    }}
+                    className="px-12 py-5 bg-primary text-primary-foreground rounded-2xl font-black text-[11px] uppercase tracking-[0.3em] shadow-[0_20px_40px_-10px_rgba(0,0,0,0.3)] shadow-primary/30 hover:scale-105 active:scale-95 transition-all dark:bg-white dark:text-black"
+                  >
+                    Reset System Stream
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </main>
         </div>
       </div>
     </div>

@@ -39,7 +39,7 @@ export function ProductCard({ product }: ProductCardProps) {
   
   return (
     <motion.div 
-      className="group relative bg-card/40 border border-border/40 rounded-[2.5rem] overflow-hidden hover:shadow-[0_22px_70px_-20px_rgba(0,0,0,0.15)] transition-all duration-700 backdrop-blur-sm flex flex-col h-full"
+      className="group relative bg-card border border-border rounded-[2.5rem] overflow-hidden hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 flex flex-col h-full dark:hover:border-primary/30"
       initial={{ opacity: 0, scale: 0.95 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
@@ -55,28 +55,21 @@ export function ProductCard({ product }: ProductCardProps) {
           loading="lazy"
         />
         
-        {/* Shimmer Overlay on Hover */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-        
-        {/* Soft Shadow at bottom of image */}
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+        {/* Overlays */}
+        <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 via-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
         {/* Tags */}
         <div className="absolute top-4 left-4 right-4 flex flex-wrap gap-2 z-10">
           {product.discountPrice && (
-            <motion.span 
-              className="bg-red-500 text-white px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-tighter shadow-xl border border-white/20"
-              initial={{ x: -20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.2 }}
-            >
-              {Math.round(((product.price - product.discountPrice) / product.price) * 100)}% Save
-            </motion.span>
+            <span className="bg-rose-600 text-white px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-tighter shadow-xl border border-white/20">
+              {Math.round(((product.price - product.discountPrice) / product.price) * 100)}% Gifted
+            </span>
           )}
           {product.productTags?.slice(0, 1).map((tag) => (
             <span 
               key={tag}
-              className={`px-3 py-1.5 rounded-full text-[10px] font-bold shadow-xl border border-white/10 ${tagStyles[tag] || 'bg-primary/90 text-white backdrop-blur-md'}`}
+              className={`px-3 py-1.5 rounded-full text-[10px] font-black uppercase shadow-xl border border-white/10 ${tagStyles[tag] || 'bg-primary/90 text-white backdrop-blur-md'}`}
             >
               {tagLabels[tag] || tag}
             </span>
@@ -84,58 +77,58 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
       </Link>
       
-      <div className="p-5 md:p-7 flex flex-col flex-1">
-        <div className="flex flex-col gap-2 mb-4">
+      <div className="p-6 md:p-8 flex flex-col flex-1">
+        <div className="flex flex-col gap-3 mb-6">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/60">
-              {product.brand || product.category?.replace('-', ' ') || 'Premium'}
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/40">
+              {product.brand || product.category?.replace('-', ' ') || 'Premium Unit'}
             </span>
-            <div className={`flex items-center gap-1 px-2 py-0.5 rounded-full ${stock.color} border border-current opacity-80 backdrop-blur-sm`}>
+            <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full ${stock.color} border border-current/20 backdrop-blur-sm`}>
               <stock.icon className="w-2.5 h-2.5" />
-              <span className="text-[9px] font-black uppercase tracking-wider">{stock.text}</span>
+              <span className="text-[9px] font-black uppercase tracking-[0.1em]">{stock.text}</span>
             </div>
           </div>
           
-          <Link href={`/products/${product.slug}`} className="min-h-[3rem] md:min-h-[3.5rem] flex items-center">
-            <h3 className="font-bold text-base md:text-xl text-foreground tracking-tight group-hover:text-primary transition-colors duration-300 line-clamp-2">
+          <Link href={`/products/${product.slug}`} className="min-h-[3.5rem] flex items-center">
+            <h3 className="font-extrabold text-lg md:text-2xl text-foreground tracking-tight group-hover:text-primary transition-colors duration-300 line-clamp-2 leading-tight">
               {product.title || product.name}
             </h3>
           </Link>
 
-          {(product.reviewCount || product.rating) && (
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-yellow-500/10 border border-yellow-500/20">
+          <div className="flex items-center gap-3">
+            {(product.reviewCount || product.rating) && (
+              <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-yellow-500/10 border border-yellow-500/20">
                 <Star className="w-3 h-3 text-yellow-500 fill-current" />
-                <span className="text-[10px] font-bold text-yellow-600">
+                <span className="text-[10px] font-black text-yellow-700 dark:text-yellow-500">
                   {product.rating ? product.rating.toFixed(1) : '5.0'}
                 </span>
+                {product.reviewCount && (
+                  <span className="text-[9px] text-yellow-700/60 dark:text-yellow-500/60 ml-0.5">({product.reviewCount})</span>
+                )}
               </div>
-              {product.reviewCount && (
-                <span className="text-[10px] text-muted-foreground font-medium">({product.reviewCount} Reviews)</span>
-              )}
-              {product.colors && product.colors.length > 0 && (
-                <span className="text-[10px] text-primary/60 font-black uppercase tracking-wider ml-auto">
-                  +{product.colors.length} Colors
-                </span>
-              )}
-            </div>
-          )}
+            )}
+            {product.colors && product.colors.length > 0 && (
+              <span className="text-[10px] font-black text-primary/30 uppercase tracking-widest ml-auto">
+                {product.colors.length} Variants Available
+              </span>
+            )}
+          </div>
         </div>
 
         {/* Price & Action Section */}
-        <div className="mt-auto pt-4 border-t border-border/40 flex flex-col gap-4">
+        <div className="mt-auto pt-6 border-t border-border/60 flex flex-col gap-5">
           <div className="flex items-baseline gap-2">
             {product.discountPrice ? (
               <>
-                <span className="font-black text-lg md:text-2xl text-primary tracking-tight">
+                <span className="font-black text-2xl md:text-3xl text-primary tracking-tighter">
                   Rs. {formatPrice(product.discountPrice)}
                 </span>
-                <span className="text-xs md:text-sm text-muted-foreground/60 line-through font-medium">
+                <span className="text-sm text-muted-foreground/40 line-through font-bold">
                   Rs. {formatPrice(product.price)}
                 </span>
               </>
             ) : (
-              <span className="font-black text-lg md:text-2xl text-primary tracking-tight">
+              <span className="font-black text-2xl md:text-3xl text-primary tracking-tighter">
                 Rs. {formatPrice(product.price)}
               </span>
             )}
@@ -143,14 +136,14 @@ export function ProductCard({ product }: ProductCardProps) {
 
           <Link
             href={`/products/${product.slug}`}
-            className="group/btn relative w-full overflow-hidden bg-primary text-primary-foreground py-3.5 px-6 rounded-2xl text-xs md:text-sm font-black transition-all duration-500 hover:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)] active:scale-[0.97] dark:bg-white dark:text-black dark:hover:bg-gray-100 flex items-center justify-center gap-2"
+            className="group/btn relative w-full overflow-hidden bg-primary text-primary-foreground py-4 px-6 rounded-2xl text-[11px] font-black uppercase tracking-[0.15em] transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 active:scale-[0.97] dark:bg-white dark:text-black dark:hover:bg-gray-100 flex items-center justify-center gap-2"
           >
-            <div className="absolute inset-0 w-1/3 h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover/btn:translate-x-[300%] transition-transform duration-1000 ease-in-out" />
+            <div className="absolute inset-0 w-1/4 h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:translate-x-[400%] transition-transform duration-1000 ease-in-out" />
             <ShoppingBag className="w-4 h-4 group-hover/btn:scale-110 transition-transform duration-300" />
             <span className="relative">
-              {product.stockStatus === 'out_of_stock' ? 'Notify Me' : (product.discountPrice ? 'Limited Deal' : 'Explore Now')}
+              {product.stockStatus === 'out_of_stock' ? 'Waitlist Me' : (product.discountPrice ? 'Special Acquisition' : 'Acquire Unit')}
             </span>
-            <ArrowRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover/btn:opacity-100 group-hover/btn:translate-x-0 transition-all duration-300" />
+            <ArrowRight className="w-4 h-4 opacity-0 -translate-x-3 group-hover/btn:opacity-100 group-hover/btn:translate-x-0 transition-all duration-500" />
           </Link>
         </div>
       </div>
