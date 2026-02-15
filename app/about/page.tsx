@@ -31,7 +31,7 @@ export default function AboutPage() {
                 <div className="inline-block px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-4">
                   <span className="text-xs font-semibold text-primary uppercase tracking-wider">Our Journey</span>
                 </div>
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-primary mb-4 md:mb-6">Our Story</h2>
+                <h2 className="text-3xl text-white md:text-4xl lg:text-5xl font-bold tracking-tight text-primary mb-4 md:mb-6">Our Story</h2>
               </div>
               <div className="space-y-4 md:space-y-5">
                 <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
