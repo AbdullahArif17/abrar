@@ -65,12 +65,12 @@ export default function ProductsClient({ products }: ProductsClientProps) {
       <div className="space-y-4">
         <div className="flex items-center gap-2 px-2">
           <Search className="w-4 h-4 text-primary" />
-          <h4 className="text-[10px] font-black text-primary/40 uppercase tracking-[0.4em]">Search Log</h4>
+          <h4 className="text-[10px] font-black text-primary/40 uppercase tracking-[0.4em]">Search</h4>
         </div>
         <div className="relative group overflow-hidden rounded-[1.5rem] border border-border shadow-xl hover:border-primary/50 transition-all duration-300">
           <input
             type="text"
-            placeholder="ID scan or keyword..."
+            placeholder="Search products..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-6 pr-6 py-5 bg-card text-sm focus:outline-none placeholder:text-muted-foreground/30 font-bold"
@@ -79,11 +79,11 @@ export default function ProductsClient({ products }: ProductsClientProps) {
         </div>
       </div>
 
-      {/* Category Scan */}
+      {/* Categories */}
       <div className="space-y-6">
          <div className="flex items-center gap-2 px-2">
           <SlidersHorizontal className="w-4 h-4 text-primary" />
-          <h4 className="text-[10px] font-black text-primary/40 uppercase tracking-[0.4em]">Filter Bank</h4>
+          <h4 className="text-[10px] font-black text-primary/40 uppercase tracking-[0.4em]">Categories</h4>
         </div>
         <div className="flex flex-col gap-3">
           {categories.map((category) => (
@@ -100,7 +100,7 @@ export default function ProductsClient({ products }: ProductsClientProps) {
                   : "bg-card text-muted-foreground border-border hover:border-primary/30 hover:text-primary"
               )}
             >
-              <span className="relative z-10">{category.label === 'All Products' ? 'All Units' : category.label}</span>
+              <span className="relative z-10">{category.label}</span>
               <ChevronRight className={cn(
                 "w-4 h-4 transition-all duration-500 relative z-10",
                 activeCategory === category.id ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"
@@ -138,13 +138,13 @@ export default function ProductsClient({ products }: ProductsClientProps) {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
               </div>
-              <span className="text-[11px] font-black tracking-[0.25em] text-primary uppercase">Elite Database Active</span>
+              <span className="text-[11px] font-black tracking-[0.25em] text-primary uppercase">Shop All Products</span>
             </motion.div>
             
             <h1 className="text-4xl xs:text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.95] uppercase flex flex-col items-center">
-              <span className="text-primary opacity-20 text-[0.4em] font-bold tracking-[0.5em] mb-2 sm:mb-4">Accessing</span>
-              <span className="text-primary mb-1 md:mb-3">The Whole</span>
-              <span className="bg-gradient-to-r from-primary via-primary/70 to-primary bg-clip-text text-transparent italic font-light lowercase">Inventory</span>
+              <span className="text-primary opacity-20 text-[0.4em] font-bold tracking-[0.5em] mb-2 sm:mb-4">Browse</span>
+              <span className="text-primary mb-1 md:mb-3">Our Full</span>
+              <span className="bg-gradient-to-r from-primary via-primary/70 to-primary bg-clip-text text-transparent italic font-light lowercase">Collection</span>
             </h1>
             
             <motion.p 
@@ -153,8 +153,8 @@ export default function ProductsClient({ products }: ProductsClientProps) {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
             >
-              Browsing our high-precision hardware ecosystem. 
-              Find the specific unit that completes your configuration.
+              Discover our carefully curated selection of premium products.
+              Find exactly what you're looking for.
             </motion.p>
           </motion.div>
         </div>
@@ -171,7 +171,7 @@ export default function ProductsClient({ products }: ProductsClientProps) {
         </button>
         <div className="flex items-center gap-3">
            <p className="text-[10px] font-black text-primary/40 uppercase tracking-[0.1em]">
-            {filteredProducts.length} Units
+            {filteredProducts.length} Products
           </p>
           <div className="h-4 w-[1px] bg-border" />
           <select 
@@ -202,15 +202,15 @@ export default function ProductsClient({ products }: ProductsClientProps) {
                     <PackageSearch className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                   <p className="text-xs font-black text-primary/40 uppercase tracking-[0.2em] mb-0.5">Scanning Results</p>
+                   <p className="text-xs font-black text-primary/40 uppercase tracking-[0.2em] mb-0.5">Results</p>
                    <p className="text-xl font-black tracking-tighter text-foreground leading-none">
-                     {filteredProducts.length} <span className="text-primary italic font-light">Units detected</span>
+                     {filteredProducts.length} <span className="text-primary italic font-light">Products found</span>
                    </p>
                 </div>
               </div>
               
               <div className="flex items-center gap-4 bg-card px-4 py-2 rounded-2xl border border-border shadow-sm group hover:border-primary/30 transition-all">
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground hidden xs:inline-block">Sort Engine</span>
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground hidden xs:inline-block">Sort by</span>
                 <div className="h-6 w-[1px] bg-border hidden xs:block" />
                 <div className="relative flex items-center">
                   <select 
@@ -247,9 +247,9 @@ export default function ProductsClient({ products }: ProductsClientProps) {
                   <div className="w-24 h-24 bg-primary/5 rounded-full flex items-center justify-center mb-8 border border-primary/10">
                     <PackageSearch className="w-10 h-10 text-primary opacity-30" />
                   </div>
-                  <h3 className="text-2xl md:text-3xl font-black text-foreground mb-4 tracking-tighter uppercase text-center">No Signal Found</h3>
+                  <h3 className="text-2xl md:text-3xl font-black text-foreground mb-4 tracking-tighter uppercase text-center">No Products Found</h3>
                   <p className="text-muted-foreground mb-12 max-w-sm mx-auto font-bold text-base md:text-lg leading-relaxed px-6 text-center">
-                    The requested data stream returned null. Re-calibrate your scan parameters.
+                    We couldn't find any products matching your filters. Try adjusting your search.
                   </p>
                   <button 
                     onClick={() => {
@@ -259,7 +259,7 @@ export default function ProductsClient({ products }: ProductsClientProps) {
                     }}
                     className="px-12 py-5 bg-primary text-primary-foreground rounded-2xl font-black text-[11px] uppercase tracking-[0.3em] shadow-[0_20px_40px_-10px_rgba(0,0,0,0.3)] shadow-primary/30 hover:scale-105 active:scale-95 transition-all dark:bg-white dark:text-black"
                   >
-                    Reset System Stream
+                    Reset Filters
                   </button>
                 </motion.div>
               )}
@@ -293,7 +293,7 @@ export default function ProductsClient({ products }: ProductsClientProps) {
                    </div>
                    <div className="flex flex-col">
                      <h3 className="text-xl font-black tracking-tighter uppercase leading-tight">Filter Panel</h3>
-                     <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-50">Adjust Scan params</span>
+                     <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-50">Refine your search</span>
                    </div>
                 </div>
                 <button 
@@ -311,7 +311,7 @@ export default function ProductsClient({ products }: ProductsClientProps) {
                   onClick={() => setIsMobileFilterOpen(false)}
                   className="w-full py-5 bg-primary text-primary-foreground rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-2xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all dark:bg-white dark:text-black"
                 >
-                  Apply Scan Filter
+                  Apply Filters
                 </button>
               </div>
             </motion.div>

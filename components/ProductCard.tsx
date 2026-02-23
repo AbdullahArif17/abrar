@@ -63,7 +63,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="absolute top-4 left-4 right-4 flex flex-wrap gap-2 z-10">
           {product.discountPrice && (
             <span className="bg-rose-600 text-white px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-tighter shadow-xl border border-white/20">
-              {Math.round(((product.price - product.discountPrice) / product.price) * 100)}% Gifted
+              {Math.round(((product.price - product.discountPrice) / product.price) * 100)}% OFF
             </span>
           )}
           {product.productTags?.slice(0, 1).map((tag) => (
@@ -81,7 +81,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="flex flex-col gap-3 mb-6">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/40">
-              {product.brand || product.category?.replace('-', ' ') || 'Premium Unit'}
+              {product.brand || product.category?.replace('-', ' ') || 'Shop'}
             </span>
             <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full ${stock.color} border border-current/20 backdrop-blur-sm`}>
               <stock.icon className="w-2.5 h-2.5" />
@@ -109,7 +109,7 @@ export function ProductCard({ product }: ProductCardProps) {
             )}
             {product.colors && product.colors.length > 0 && (
               <span className="text-[10px] font-black text-primary/30 uppercase tracking-widest ml-auto">
-                {product.colors.length} Variants Available
+                {product.colors.length} Colors
               </span>
             )}
           </div>
@@ -141,7 +141,7 @@ export function ProductCard({ product }: ProductCardProps) {
             <div className="absolute inset-0 w-1/4 h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:translate-x-[400%] transition-transform duration-1000 ease-in-out" />
             <ShoppingBag className="w-4 h-4 group-hover/btn:scale-110 transition-transform duration-300" />
             <span className="relative">
-              {product.stockStatus === 'out_of_stock' ? 'Waitlist Me' : (product.discountPrice ? 'Special Acquisition' : 'Acquire Unit')}
+              {product.stockStatus === 'out_of_stock' ? 'Notify Me' : (product.discountPrice ? 'Shop Now' : 'View Product')}
             </span>
             <ArrowRight className="w-4 h-4 opacity-0 -translate-x-3 group-hover/btn:opacity-100 group-hover/btn:translate-x-0 transition-all duration-500" />
           </Link>
