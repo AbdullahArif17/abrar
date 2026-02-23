@@ -1,9 +1,9 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import { ProductCard } from './ProductCard'
 import { Product } from '@/lib/products'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 
@@ -16,9 +16,7 @@ export function FeaturedProductsCarousel({ products }: FeaturedProductsCarouselP
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
   const [visibleCount, setVisibleCount] = useState(3)
   const [direction, setDirection] = useState(0)
-  const containerRef = useRef<HTMLDivElement>(null)
 
-  // Determine visible count based on screen size
   useEffect(() => {
     const updateVisibleCount = () => {
       if (typeof window === 'undefined') return
@@ -32,10 +30,8 @@ export function FeaturedProductsCarousel({ products }: FeaturedProductsCarouselP
     return () => window.removeEventListener('resize', updateVisibleCount)
   }, [])
 
-  // Calculate number of slides needed
   const totalSlides = Math.ceil(products.length / visibleCount)
 
-  // Auto-advance carousel
   useEffect(() => {
     if (!isAutoPlaying || products.length <= visibleCount || totalSlides <= 1) return
 
@@ -47,20 +43,20 @@ export function FeaturedProductsCarousel({ products }: FeaturedProductsCarouselP
     return () => clearInterval(interval)
   }, [isAutoPlaying, products.length, visibleCount, totalSlides])
 
-  const goToSlide = (index: number) => {
+  const goToSlide = useCallback((index: number) => {
     setDirection(index > currentIndex ? 1 : -1)
     setCurrentIndex(index)
     setIsAutoPlaying(false)
     setTimeout(() => setIsAutoPlaying(true), 15000)
-  }
+  }, [currentIndex])
 
-  const goToPrevious = () => {
+  const goToPrevious = useCallback(() => {
     goToSlide((currentIndex - 1 + totalSlides) % totalSlides)
-  }
+  }, [currentIndex, totalSlides, goToSlide])
 
-  const goToNext = () => {
+  const goToNext = useCallback(() => {
     goToSlide((currentIndex + 1) % totalSlides)
-  }
+  }, [currentIndex, totalSlides, goToSlide])
 
   if (products.length === 0) {
     return (
@@ -72,30 +68,28 @@ export function FeaturedProductsCarousel({ products }: FeaturedProductsCarouselP
 
   const variants = {
     enter: (direction: number) => ({
-      x: direction > 0 ? 1000 : -1000,
-      opacity: 0
+      x: direction > 0 ? 800 : -800,
+      opacity: 0,
+      scale: 0.95,
     }),
     center: {
       zIndex: 1,
       x: 0,
-      opacity: 1
+      opacity: 1,
+      scale: 1,
     },
     exit: (direction: number) => ({
       zIndex: 0,
-      x: direction < 0 ? 1000 : -1000,
-      opacity: 0
+      x: direction < 0 ? 800 : -800,
+      opacity: 0,
+      scale: 0.95,
     })
   }
 
-  const swipeConfidenceThreshold = 10000
-  const swipePower = (offset: number, velocity: number) => {
-    return Math.abs(offset) * velocity
-  }
-
   return (
-    <div className="relative">
+    <div className="relative group/carousel">
       {/* Carousel Container */}
-      <div className="overflow-hidden relative min-h-[500px]" ref={containerRef}>
+      <div className="overflow-hidden relative min-h-[500px]">
         <AnimatePresence initial={false} custom={direction}>
           <motion.div
             key={currentIndex}
@@ -105,8 +99,9 @@ export function FeaturedProductsCarousel({ products }: FeaturedProductsCarouselP
             animate="center"
             exit="exit"
             transition={{
-              x: { type: "spring", stiffness: 300, damping: 30 },
-              opacity: { duration: 0.2 }
+              x: { type: "spring", stiffness: 280, damping: 30 },
+              opacity: { duration: 0.25 },
+              scale: { duration: 0.3 },
             }}
             className="absolute inset-0 w-full"
           >
@@ -119,43 +114,58 @@ export function FeaturedProductsCarousel({ products }: FeaturedProductsCarouselP
         </AnimatePresence>
       </div>
 
-      {/* Navigation Arrows */}
+      {/* Navigation Arrows - appear on hover */}
       {totalSlides > 1 && (
         <>
           <button
             onClick={goToPrevious}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 bg-background/90 hover:bg-background border border-border/40 rounded-full p-4 shadow-xl z-20 transition-all hover:scale-110 active:scale-95 hidden md:block group"
+            className="absolute left-2 md:-left-6 top-1/2 -translate-y-1/2 bg-background/95 hover:bg-background border border-border/50 rounded-full p-3 md:p-4 shadow-xl z-20 transition-all duration-300 hover:scale-110 active:scale-95 opacity-0 group-hover/carousel:opacity-100 hover:shadow-2xl"
             aria-label="Previous products"
           >
-            <ChevronLeft className="w-6 h-6 text-primary group-hover:scale-110 transition-transform" />
+            <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 text-foreground" />
           </button>
           <button
             onClick={goToNext}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 bg-background/90 hover:bg-background border border-border/40 rounded-full p-4 shadow-xl z-20 transition-all hover:scale-110 active:scale-95 hidden md:block group"
+            className="absolute right-2 md:-right-6 top-1/2 -translate-y-1/2 bg-background/95 hover:bg-background border border-border/50 rounded-full p-3 md:p-4 shadow-xl z-20 transition-all duration-300 hover:scale-110 active:scale-95 opacity-0 group-hover/carousel:opacity-100 hover:shadow-2xl"
             aria-label="Next products"
           >
-            <ChevronRight className="w-6 h-6 text-primary group-hover:scale-110 transition-transform" />
+            <ChevronRight className="w-5 h-5 md:w-6 md:h-6 text-foreground" />
           </button>
         </>
       )}
 
-      {/* Dots Indicator */}
+      {/* Bottom Controls: Dots + Autoplay Toggle */}
       {totalSlides > 1 && (
-        <div className="flex justify-center gap-3 mt-12">
-          {Array.from({ length: totalSlides }).map((_, index) => {
-            const active = currentIndex === index
-            return (
-              <button
-                key={index}
-                onClick={() => goToSlide(index)}
-                className={cn(
-                  "h-1.5 rounded-full transition-all duration-500",
-                  active ? 'w-12 bg-primary' : 'w-3 bg-border hover:bg-primary/30'
-                )}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            )
-          })}
+        <div className="flex items-center justify-center gap-4 mt-10">
+          <div className="flex items-center gap-2">
+            {Array.from({ length: totalSlides }).map((_, index) => {
+              const active = currentIndex === index
+              return (
+                <button
+                  key={index}
+                  onClick={() => goToSlide(index)}
+                  className={cn(
+                    "rounded-full transition-all duration-500 hover:bg-primary/50",
+                    active ? 'w-8 h-2 bg-primary' : 'w-2 h-2 bg-border'
+                  )}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              )
+            })}
+          </div>
+          
+          <div className="w-px h-4 bg-border" />
+          
+          <button
+            onClick={() => setIsAutoPlaying(!isAutoPlaying)}
+            className={cn(
+              "p-1.5 rounded-lg transition-all text-muted-foreground hover:text-foreground",
+              isAutoPlaying ? "hover:bg-secondary" : "bg-secondary"
+            )}
+            aria-label={isAutoPlaying ? "Pause autoplay" : "Resume autoplay"}
+          >
+            {isAutoPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
+          </button>
         </div>
       )}
     </div>
