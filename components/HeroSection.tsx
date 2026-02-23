@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
+import { Shield, Truck, RefreshCw } from 'lucide-react'
 
 export function HeroSection() {
   return (
@@ -57,6 +58,29 @@ export function HeroSection() {
             >
               Our Story
             </Link>
+          </motion.div>
+
+          {/* Trust Badges - inline */}
+          <motion.div
+            className="flex flex-wrap items-center justify-center gap-6 pt-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.9 }}
+          >
+            <div className="flex items-center gap-2 text-muted-foreground/60">
+              <Truck className="w-4 h-4" />
+              <span className="text-xs font-semibold">Free Shipping 5000+</span>
+            </div>
+            <div className="w-px h-4 bg-border hidden sm:block" />
+            <div className="flex items-center gap-2 text-muted-foreground/60">
+              <Shield className="w-4 h-4" />
+              <span className="text-xs font-semibold">1 Year Warranty</span>
+            </div>
+            <div className="w-px h-4 bg-border hidden sm:block" />
+            <div className="flex items-center gap-2 text-muted-foreground/60">
+              <RefreshCw className="w-4 h-4" />
+              <span className="text-xs font-semibold">7 Days Return</span>
+            </div>
           </motion.div>
         </motion.div>
       </div>
