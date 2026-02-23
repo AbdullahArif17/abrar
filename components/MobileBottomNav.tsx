@@ -3,26 +3,23 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, ShoppingBag, Search, User, ShoppingCart } from 'lucide-react';
+import { Home, Search, User, Phone } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useCartStore } from '@/store/useCartStore';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 export function MobileBottomNav() {
   const pathname = usePathname();
-  const { items, toggleCart } = useCartStore();
   const [isMounted, setIsMounted] = React.useState(false);
 
   React.useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  const cartCount = items.reduce((acc, item) => acc + item.quantity, 0);
-
   const navItems = [
     { href: '/', label: 'Home', icon: Home },
     { href: '/products', label: 'Shop', icon: Search },
     { href: '/about', label: 'About', icon: User },
+    { href: '/contact', label: 'Contact', icon: Phone },
   ];
 
   const isActive = (path: string) => pathname === path;
@@ -62,36 +59,6 @@ export function MobileBottomNav() {
             </Link>
           );
         })}
-
-        {/* Cart Item Specialized */}
-        <button 
-          onClick={toggleCart}
-          className="flex flex-col items-center gap-1 group relative"
-        >
-          <motion.div
-            whileTap={{ scale: 0.9 }}
-            className="p-1.5 rounded-xl text-muted-foreground"
-          >
-            <div className="relative">
-              <ShoppingCart className="w-6 h-6" />
-              <AnimatePresence>
-                {isMounted && cartCount > 0 && (
-                  <motion.span 
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    exit={{ scale: 0 }}
-                    className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-md dark:bg-white dark:text-black"
-                  >
-                    {cartCount}
-                  </motion.span>
-                )}
-              </AnimatePresence>
-            </div>
-          </motion.div>
-          <span className="text-[10px] font-bold tracking-tight text-muted-foreground">
-            Cart
-          </span>
-        </button>
       </div>
     </div>
   );

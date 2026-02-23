@@ -284,14 +284,6 @@ export default function ProductsClient({ products }: ProductsClientProps) {
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: "spring", damping: 30, stiffness: 300, mass: 0.8 }}
-              drag="y"
-              dragConstraints={{ top: 0, bottom: 0 }}
-              dragElastic={{ top: 0, bottom: 0.2 }}
-              onDragEnd={(_, info) => {
-                if (info.offset.y > 100 || info.velocity.y > 500) {
-                  setIsMobileFilterOpen(false);
-                }
-              }}
               className="fixed inset-x-0 bottom-0 z-[110] bg-background rounded-t-[2.5rem] border-t border-border/40 shadow-2xl p-8 pt-4 max-h-[85vh] overflow-y-auto md:hidden"
             >
               {/* Standard Pull Handle */}

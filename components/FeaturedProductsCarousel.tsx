@@ -108,18 +108,6 @@ export function FeaturedProductsCarousel({ products }: FeaturedProductsCarouselP
               x: { type: "spring", stiffness: 300, damping: 30 },
               opacity: { duration: 0.2 }
             }}
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={1}
-            onDragEnd={(e, { offset, velocity }) => {
-              const swipe = swipePower(offset.x, velocity.x)
-
-              if (swipe < -swipeConfidenceThreshold) {
-                goToNext()
-              } else if (swipe > swipeConfidenceThreshold) {
-                goToPrevious()
-              }
-            }}
             className="absolute inset-0 w-full"
           >
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
@@ -170,11 +158,6 @@ export function FeaturedProductsCarousel({ products }: FeaturedProductsCarouselP
           })}
         </div>
       )}
-
-      {/* Mobile Navigation labels */}
-      <div className="mt-6 text-center md:hidden">
-         <p className="text-[10px] font-black uppercase tracking-[0.4em] text-primary/30">Swipe to Browse Units</p>
-      </div>
     </div>
   )
 }

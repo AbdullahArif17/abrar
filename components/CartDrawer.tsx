@@ -43,16 +43,6 @@ export function CartDrawer() {
             animate={{ x: 0, y: 0 }}
             exit={isMobile ? { y: '100%', x: 0 } : { x: '100%' }}
             transition={{ type: 'spring', damping: 30, stiffness: 300, mass: 0.8 }}
-            drag={isMobile ? "y" : "x"}
-            dragConstraints={isMobile ? { top: 0, bottom: 0 } : { left: 0, right: 300 }}
-            dragElastic={isMobile ? { top: 0, bottom: 0.2 } : { left: 0, right: 0.1 }}
-            onDragEnd={(_, info) => {
-              if (isMobile) {
-                if (info.offset.y > 100 || info.velocity.y > 500) toggleCart()
-              } else {
-                if (info.offset.x > 100 || info.velocity.x > 500) toggleCart()
-              }
-            }}
             className={cn(
               "fixed right-0 top-0 h-full w-full sm:w-[90vw] sm:max-w-md bg-background border-l border-border/40 shadow-2xl z-[120] flex flex-col",
               "md:translate-y-0 max-md:top-auto max-md:bottom-0 max-md:h-[85vh] max-md:rounded-t-[2.5rem] max-md:border-t"
