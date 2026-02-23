@@ -132,23 +132,18 @@ export function Navbar() {
               className="fixed inset-0 z-[110] bg-background/60 backdrop-blur-md md:hidden"
             />
             
-            {/* Bottom Sheet Drawer */}
+            {/* Side Drawer */}
             <motion.div 
-              className="fixed bottom-0 inset-x-0 z-[120] bg-background rounded-t-[2.5rem] border-t border-border/40 shadow-2xl md:hidden flex flex-col max-h-[90vh] overflow-hidden"
-              initial={{ y: '100%' }}
-              animate={{ y: 0 }}
-              exit={{ y: '100%' }}
-              transition={{ type: "spring", damping: 30, stiffness: 300, mass: 0.8 }}
+              className="fixed top-0 right-0 bottom-0 z-[120] w-[85%] max-w-[400px] bg-background border-l border-border/40 shadow-2xl md:hidden flex flex-col overflow-hidden"
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
             >
-              {/* Standard Pull Handle */}
-              <div className="flex justify-center p-4">
-                <div className="w-12 h-1.5 bg-border/60 rounded-full" />
-              </div>
-
-              <div className="px-8 pb-6 flex items-center justify-between border-b border-border/40">
+              <div className="px-8 py-8 flex items-center justify-between border-b border-border/40">
                 <div className="flex flex-col">
-                  <span className="font-black text-2xl tracking-tighter text-primary">NAVIGATION</span>
-                  <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-50">System Menu</span>
+                  <span className="font-black text-2xl tracking-tighter text-primary uppercase">Menu</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-50">Identity Terminal</span>
                 </div>
                 <button 
                   onClick={() => setIsMobileMenuOpen(false)}
@@ -159,18 +154,18 @@ export function Navbar() {
               </div>
 
               <div className="flex-1 overflow-y-auto py-8">
-                <div className="flex flex-col px-6 gap-3">
+                <div className="flex flex-col px-6 gap-2">
                   {navLinks.map((link, i) => (
                     <motion.div
                       key={link.label}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.05 * i }}
                     >
                       <Link 
                         href={link.href}
                         className={cn(
-                          "flex items-center justify-between py-5 px-6 rounded-[1.5rem] text-xl font-black tracking-tight transition-all border",
+                          "flex items-center justify-between py-6 px-6 rounded-[1.5rem] text-xl font-black tracking-tight transition-all border",
                           isActive(link.href) 
                             ? "text-primary bg-primary/10 border-primary/20 scale-[1.02] shadow-sm" 
                             : "text-muted-foreground border-transparent hover:bg-secondary/50"
@@ -194,15 +189,17 @@ export function Navbar() {
                 </div>
               </div>
 
-              <div className="p-8 border-t border-border/40 flex items-center justify-between bg-secondary/10">
-                <div className="flex items-center gap-3">
-                   <div className="p-2 bg-background rounded-lg border border-border/40 shadow-sm">
-                     <ThemeToggle />
-                   </div>
-                   <span className="text-xs font-black uppercase tracking-widest text-muted-foreground">Dark mode</span>
-                </div>
-                <div className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/40">
-                  v 1.2.0
+              <div className="p-8 border-t border-border/40 space-y-8 bg-secondary/10">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-background rounded-lg border border-border/40 shadow-sm">
+                      <ThemeToggle />
+                    </div>
+                    <span className="text-xs font-black uppercase tracking-widest text-muted-foreground">Dark mode</span>
+                  </div>
+                  <div className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/40">
+                    v 1.2.0
+                  </div>
                 </div>
               </div>
             </motion.div>

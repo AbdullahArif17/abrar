@@ -37,23 +37,17 @@ export function CartDrawer() {
             className="fixed inset-0 bg-background/60 backdrop-blur-md z-[110]"
           />
 
-          {/* Drawer / Bottom Sheet */}
+          {/* Side Drawer */}
           <motion.div
-            initial={isMobile ? { y: '100%', x: 0 } : { x: '100%' }}
-            animate={{ x: 0, y: 0 }}
-            exit={isMobile ? { y: '100%', x: 0 } : { x: '100%' }}
-            transition={{ type: 'spring', damping: 30, stiffness: 300, mass: 0.8 }}
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
             className={cn(
-              "fixed right-0 top-0 h-full w-full sm:w-[90vw] sm:max-w-md bg-background border-l border-border/40 shadow-2xl z-[120] flex flex-col",
-              "md:translate-y-0 max-md:top-auto max-md:bottom-0 max-md:h-[85vh] max-md:rounded-t-[2.5rem] max-md:border-t"
+              "fixed right-0 top-0 bottom-0 w-full sm:w-[90vw] sm:max-w-md bg-background border-l border-border/40 shadow-2xl z-[120] flex flex-col"
             )}
           >
-            {/* Mobile Drag Handle */}
-            <div className="flex justify-center p-4 md:hidden">
-              <div className="w-12 h-1.5 bg-border/60 rounded-full" />
-            </div>
-
-            <div className="flex items-center justify-between px-6 py-5 md:p-8 border-b border-border/40">
+            <div className="flex items-center justify-between px-6 py-6 md:p-8 border-b border-border/40">
               <div className="flex flex-col">
                 <h2 className="text-xl md:text-2xl font-black tracking-tighter text-foreground uppercase">Inventory</h2>
                 <p className="text-[10px] font-black uppercase tracking-widest text-primary/40">{items.length} Units Ready</p>

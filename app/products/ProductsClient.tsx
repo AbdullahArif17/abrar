@@ -280,17 +280,12 @@ export default function ProductsClient({ products }: ProductsClientProps) {
               className="fixed inset-0 z-[100] bg-background/60 backdrop-blur-md md:hidden"
             />
             <motion.div 
-              initial={{ y: '100%' }}
-              animate={{ y: 0 }}
-              exit={{ y: '100%' }}
-              transition={{ type: "spring", damping: 30, stiffness: 300, mass: 0.8 }}
-              className="fixed inset-x-0 bottom-0 z-[110] bg-background rounded-t-[2.5rem] border-t border-border/40 shadow-2xl p-8 pt-4 max-h-[85vh] overflow-y-auto md:hidden"
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed top-0 right-0 bottom-0 z-[110] w-[85%] max-w-[400px] bg-background border-l border-border/40 shadow-2xl p-8 overflow-y-auto md:hidden"
             >
-              {/* Standard Pull Handle */}
-              <div className="flex justify-center mb-6">
-                <div className="w-12 h-1.5 bg-border/60 rounded-full" />
-              </div>
-
               <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-3">
                    <div className="w-10 h-10 bg-primary/10 rounded-[1.25rem] flex items-center justify-center border border-primary/20">
