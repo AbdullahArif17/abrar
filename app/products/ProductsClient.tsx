@@ -283,19 +283,35 @@ export default function ProductsClient({ products }: ProductsClientProps) {
               initial={{ y: '100%' }}
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed inset-x-0 bottom-0 z-[110] bg-background rounded-t-[2.5rem] border-t border-border shadow-2xl p-8 max-h-[85vh] overflow-y-auto md:hidden"
+              transition={{ type: "spring", damping: 30, stiffness: 300, mass: 0.8 }}
+              drag="y"
+              dragConstraints={{ top: 0, bottom: 0 }}
+              dragElastic={{ top: 0, bottom: 0.2 }}
+              onDragEnd={(_, info) => {
+                if (info.offset.y > 100 || info.velocity.y > 500) {
+                  setIsMobileFilterOpen(false);
+                }
+              }}
+              className="fixed inset-x-0 bottom-0 z-[110] bg-background rounded-t-[2.5rem] border-t border-border/40 shadow-2xl p-8 pt-4 max-h-[85vh] overflow-y-auto md:hidden"
             >
+              {/* Standard Pull Handle */}
+              <div className="flex justify-center mb-6">
+                <div className="w-12 h-1.5 bg-border/60 rounded-full" />
+              </div>
+
               <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-3">
-                   <div className="w-8 h-8 bg-primary/10 rounded-xl flex items-center justify-center">
-                    <SlidersHorizontal className="w-4 h-4 text-primary" />
+                   <div className="w-10 h-10 bg-primary/10 rounded-[1.25rem] flex items-center justify-center border border-primary/20">
+                    <SlidersHorizontal className="w-5 h-5 text-primary" />
                    </div>
-                   <h3 className="text-xl font-black tracking-tighter uppercase">Filter Panel</h3>
+                   <div className="flex flex-col">
+                     <h3 className="text-xl font-black tracking-tighter uppercase leading-tight">Filter Panel</h3>
+                     <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-50">Adjust Scan params</span>
+                   </div>
                 </div>
                 <button 
                   onClick={() => setIsMobileFilterOpen(false)}
-                  className="p-2 hover:bg-secondary rounded-full transition-colors"
+                  className="p-3 hover:bg-secondary rounded-2xl transition-all active:scale-95"
                 >
                   <X className="w-6 h-6" />
                 </button>
@@ -303,10 +319,10 @@ export default function ProductsClient({ products }: ProductsClientProps) {
               
               <FilterPanel isMobile />
 
-              <div className="mt-12 sticky bottom-0 bg-background pt-4">
+              <div className="mt-12 sticky bottom-0 bg-background pt-4 pb-2">
                 <button 
                   onClick={() => setIsMobileFilterOpen(false)}
-                  className="w-full py-5 bg-primary text-primary-foreground rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] shadow-xl dark:bg-white dark:text-black"
+                  className="w-full py-5 bg-primary text-primary-foreground rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-2xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all dark:bg-white dark:text-black"
                 >
                   Apply Scan Filter
                 </button>

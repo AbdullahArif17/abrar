@@ -129,61 +129,72 @@ export function Navbar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 z-[90] bg-background/60 backdrop-blur-md md:hidden"
+              className="fixed inset-0 z-[110] bg-background/60 backdrop-blur-md md:hidden"
             />
             
-            {/* Drawer */}
+            {/* Bottom Sheet Drawer */}
             <motion.div 
-              className="fixed top-0 right-0 bottom-0 z-[100] w-[85%] max-w-[400px] bg-background border-l border-border/40 shadow-2xl md:hidden flex flex-col touch-none"
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              drag="x"
-              dragConstraints={{ left: 0, right: 300 }}
-              dragElastic={0.05}
+              className="fixed bottom-0 inset-x-0 z-[120] bg-background rounded-t-[2.5rem] border-t border-border/40 shadow-2xl md:hidden flex flex-col max-h-[90vh] overflow-hidden"
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
+              transition={{ type: "spring", damping: 30, stiffness: 300, mass: 0.8 }}
+              drag="y"
+              dragConstraints={{ top: 0, bottom: 0 }}
+              dragElastic={{ top: 0, bottom: 0.2 }}
               onDragEnd={(_, info) => {
-                if (info.offset.x > 50 || info.velocity.x > 500) {
+                if (info.offset.y > 100 || info.velocity.y > 500) {
                   setIsMobileMenuOpen(false);
                 }
               }}
             >
-              {/* Drag Handle Indicator */}
-              <div className="absolute left-1.5 top-1/2 -translate-y-1/2 w-1 h-12 bg-border/40 rounded-full" />
+              {/* Standard Pull Handle */}
+              <div className="flex justify-center p-4">
+                <div className="w-12 h-1.5 bg-border/60 rounded-full" />
+              </div>
 
-              <div className="p-6 flex items-center justify-between border-b border-border/40">
-                <span className="font-black text-xl tracking-tighter text-primary">MENU</span>
+              <div className="px-8 pb-6 flex items-center justify-between border-b border-border/40">
+                <div className="flex flex-col">
+                  <span className="font-black text-2xl tracking-tighter text-primary">NAVIGATION</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-50">System Menu</span>
+                </div>
                 <button 
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="p-2 hover:bg-secondary rounded-xl transition-colors"
+                  className="p-3 hover:bg-secondary rounded-2xl transition-all active:scale-90"
                 >
                   <X className="w-6 h-6" />
                 </button>
               </div>
 
               <div className="flex-1 overflow-y-auto py-8">
-                <div className="flex flex-col px-6 gap-4">
+                <div className="flex flex-col px-6 gap-3">
                   {navLinks.map((link, i) => (
                     <motion.div
                       key={link.label}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.05 * i }}
                     >
                       <Link 
                         href={link.href}
                         className={cn(
-                          "flex items-center justify-between py-4 px-6 rounded-2xl text-2xl font-black tracking-tighter transition-all border border-transparent",
+                          "flex items-center justify-between py-5 px-6 rounded-[1.5rem] text-xl font-black tracking-tight transition-all border",
                           isActive(link.href) 
-                            ? "text-primary bg-primary/10 border-primary/20 scale-[1.02]" 
-                            : "text-muted-foreground hover:text-primary hover:bg-secondary/50"
+                            ? "text-primary bg-primary/10 border-primary/20 scale-[1.02] shadow-sm" 
+                            : "text-muted-foreground border-transparent hover:bg-secondary/50"
                         )}
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
-                        {link.label}
+                        <span className="flex items-center gap-4">
+                          <span className={cn(
+                            "w-2 h-2 rounded-full transition-all",
+                            isActive(link.href) ? "bg-primary animate-pulse" : "bg-muted-foreground/20"
+                          )} />
+                          {link.label}
+                        </span>
                         <ChevronRight className={cn(
-                          "w-6 h-6 transition-transform",
-                          isActive(link.href) ? "opacity-100" : "opacity-0"
+                          "w-5 h-5 transition-transform",
+                          isActive(link.href) ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"
                         )} />
                       </Link>
                     </motion.div>
@@ -191,9 +202,16 @@ export function Navbar() {
                 </div>
               </div>
 
-              <div className="p-8 border-t border-border/40 flex items-center justify-between bg-secondary/20">
-                <span className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">Appearance</span>
-                <ThemeToggle />
+              <div className="p-8 border-t border-border/40 flex items-center justify-between bg-secondary/10">
+                <div className="flex items-center gap-3">
+                   <div className="p-2 bg-background rounded-lg border border-border/40 shadow-sm">
+                     <ThemeToggle />
+                   </div>
+                   <span className="text-xs font-black uppercase tracking-widest text-muted-foreground">Dark mode</span>
+                </div>
+                <div className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/40">
+                  v 1.2.0
+                </div>
               </div>
             </motion.div>
           </>
