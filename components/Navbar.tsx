@@ -59,11 +59,11 @@ export function Navbar() {
             <Image
               src="/J Tech Mart Logo-01.png"
               alt="JTech Mart Logo"
-              width={160}
-              height={160}
+              width={350}
+              height={350}
               className={cn(
                 "w-auto transition-all duration-300",
-                scrolled ? "h-14 md:h-18" : "h-16 md:h-20"
+                scrolled ? "h-28 md:h-36" : "h-28 md:h-36"
               )}
               priority
             />

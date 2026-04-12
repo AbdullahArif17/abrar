@@ -329,7 +329,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       </div>
 
       {/* Mobile Sticky Add to Cart */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-[55] bg-background/95 backdrop-blur-md border-t border-border p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-[0_-4px_10px_rgba(0,0,0,0.05)] translate-y-[-60px]">
+      <div className="md:hidden fixed bottom-[60px] left-0 right-0 z-[55] bg-background/95 backdrop-blur-md border-t border-border p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
         <div className="container mx-auto flex items-center justify-between gap-3">
             <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">Price</span>
             <span className="text-lg font-black text-primary">
