@@ -23,11 +23,16 @@ interface AddToCartButtonProps {
 }
 
 export function AddToCartButton({ product, variant = 'default', className = '' }: AddToCartButtonProps) {
-  const { addItem } = useCartStore()
+  const { addItem, items } = useCartStore()
   const [added, setAdded] = useState(false)
   const [showToast, setShowToast] = useState(false)
 
+  const cartItem = items.find(item => item._id === product._id)
+  const isMaxReached = cartItem ? cartItem.quantity >= 5 : false
+
   const handleAddToCart = () => {
+    if (isMaxReached) return;
+    
     // Transform product to match cart store format
     const cartProduct = {
       _id: product._id,
@@ -61,14 +66,18 @@ export function AddToCartButton({ product, variant = 'default', className = '' }
     <>
       <button 
         onClick={handleAddToCart}
-        disabled={added}
-        className={`${baseStyles} ${variantStyles[variant]} ${added ? 'bg-green-600 hover:bg-green-600' : 'hover:bg-primary/90'} ${className}`}
+        disabled={added || isMaxReached}
+        className={`${baseStyles} ${variantStyles[variant]} ${added ? 'bg-green-600 hover:bg-green-600' : isMaxReached ? 'bg-secondary text-muted-foreground cursor-not-allowed' : 'hover:bg-primary/90'} ${className}`}
         aria-label={`Add ${productName} to cart`}
       >
         {added ? (
           <>
             <Check className="w-5 h-5" />
             Added!
+          </>
+        ) : isMaxReached ? (
+          <>
+            Limit 5 Max
           </>
         ) : (
           <>

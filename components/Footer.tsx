@@ -21,7 +21,8 @@ export function Footer() {
             </p>
             <div className="flex gap-3">
               <motion.a 
-                href="#" 
+                href="https://www.facebook.com/profile.php?id=61570515511522" 
+                target="_blank" rel="noopener noreferrer"
                 className="p-2 rounded-lg bg-secondary hover:bg-secondary/80 text-muted-foreground hover:text-primary transition-all"
                 whileHover={{ scale: 1.1, y: -2 }}
                 whileTap={{ scale: 0.95 }}
@@ -29,7 +30,8 @@ export function Footer() {
                 <Facebook className="w-5 h-5" />
               </motion.a>
               <motion.a 
-                href="#" 
+                href="https://www.instagram.com/j_tech.mart?fbclid=IwY2xjawRI6l1leHRuA2FlbQIxMABicmlkETFrMGtQT1B4RzZkczFxRjN6c3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHlfKeREnjZo-4yRDMpK7qi5wZbpUQIpk9M-K27dwxS4qgm6I4HhdBN_a_wKX_aem_-A1jEkMyeDP957ogxavFiw" 
+                target="_blank" rel="noopener noreferrer"
                 className="p-2 rounded-lg bg-secondary hover:bg-secondary/80 text-muted-foreground hover:text-primary transition-all"
                 whileHover={{ scale: 1.1, y: -2 }}
                 whileTap={{ scale: 0.95 }}

@@ -66,8 +66,8 @@ export default function ContactPage() {
                 <div>
                   <h3 className="font-semibold text-primary">Office</h3>
                   <p className="text-muted-foreground">
-                    123 Innovation Drive<br />
-                    Tech City, TC 90210
+                    Saddar,<br />
+                    Karachi, Pakistan
                   </p>
                 </div>
               </div>
