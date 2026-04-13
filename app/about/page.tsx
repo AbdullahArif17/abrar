@@ -11,12 +11,12 @@ export default function AboutPage() {
       <section className="py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4 md:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
-            <div className="relative w-full aspect-square md:aspect-[4/3] lg:aspect-square rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl border border-border/50 group">
+            <div className="relative w-full aspect-square md:aspect-[4/3] lg:aspect-square flex items-center justify-center bg-secondary/10 dark:bg-secondary/20 rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl border border-border/50 group">
                <Image
-                 src="/j tech mart.jpg.jpeg"
-                 alt="J Tech Mart Ad"
+                 src="/J Tech Mart Logo-01.png"
+                 alt="J Tech Mart Logo"
                  fill
-                 className="object-cover group-hover:scale-105 transition-transform duration-700"
+                 className="object-contain p-12 group-hover:scale-110 transition-transform duration-700"
                  priority
                />
             </div>

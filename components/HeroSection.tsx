@@ -1,12 +1,14 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Shield, Truck, RefreshCw } from 'lucide-react'
 
 export function HeroSection() {
   return (
-    <section className="relative bg-gradient-to-br from-background via-secondary/20 to-background py-24 md:py-40 overflow-hidden">
+    <>
+    <section className="relative bg-gradient-to-br from-background via-secondary/20 to-background pt-24 pb-16 md:pt-32 md:pb-20 overflow-hidden">
       <div className="container mx-auto px-4 relative z-10">
         <motion.div 
           className="max-w-4xl mx-auto text-center space-y-10"
@@ -89,5 +91,32 @@ export function HeroSection() {
       <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-gradient-to-br from-primary/5 to-transparent rounded-full blur-3xl -z-0 pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-gradient-to-tl from-primary/5 to-transparent rounded-full blur-3xl -z-0 pointer-events-none" />
     </section>
+
+    {/* Modern Banner Image - Content Centered & Capped */}
+    <motion.section
+      className="w-full px-4 sm:px-6 lg:px-8 -mt-2 pb-12 md:pb-20 bg-background"
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 1.1, duration: 0.8 }}
+    >
+      <div className="relative w-full max-w-7xl mx-auto rounded-2xl md:rounded-[2.5rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-border/40 bg-muted/20 group aspect-[16/8] sm:aspect-[21/9] lg:aspect-[21/7] xl:h-[500px] 2xl:h-[600px] xl:aspect-none">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/10 z-10 pointer-events-none transition-all duration-700 group-hover:from-black/50" />
+        <Image
+          src="/j tech mart.jpg.jpeg"
+          alt="J Tech Mart Banner Image"
+          fill
+          priority
+          className="object-cover object-center group-hover:scale-[1.05] transition-transform duration-[2000ms] ease-out z-0"
+          sizes="(max-width: 1280px) 100vw, 1280px"
+        />
+        
+        {/* Optional: Subtle Overlay Text for premium feel */}
+        <div className="absolute inset-0 z-20 flex flex-col justify-end p-8 md:p-12 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-t from-black/60 via-transparent to-transparent">
+          <p className="text-sm font-medium tracking-widest uppercase mb-2">Exclusive Technology</p>
+          <h3 className="text-2xl md:text-3xl font-bold">Premium Quality Guaranteed</h3>
+        </div>
+      </div>
+    </motion.section>
+    </>
   )
 }
