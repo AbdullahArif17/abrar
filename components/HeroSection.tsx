@@ -8,19 +8,44 @@ import { Shield, Truck, RefreshCw } from 'lucide-react'
 export function HeroSection() {
   return (
     <>
-    <section className="relative bg-gradient-to-br from-background via-secondary/20 to-background pt-24 pb-16 md:pt-32 md:pb-20 overflow-hidden">
+    {/* Modern Banner Image - Truly Full Width Edge-to-Edge */}
+    <motion.section
+      className="w-full bg-background"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+    >
+      <div className="relative w-full overflow-hidden shadow-2xl border-b border-border/40 bg-muted/20 group aspect-[16/8] sm:aspect-[21/9] lg:aspect-[21/7] xl:h-[550px] 2xl:h-[650px] xl:aspect-none">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/10 z-10 pointer-events-none transition-all duration-700 group-hover:from-black/50" />
+        <Image
+          src="/j tech mart.jpg.jpeg"
+          alt="J Tech Mart Banner Image"
+          fill
+          priority
+          className="object-fit object-center group-hover:scale-[1.05] transition-transform duration-[2000ms] ease-out z-0"
+          sizes="(max-width: 1280px) 100vw, 1280px"
+        />
+        
+        <div className="absolute inset-0 z-20 flex flex-col justify-end p-8 md:p-12 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-t from-black/60 via-transparent to-transparent">
+          <p className="text-sm font-medium tracking-widest uppercase mb-2">Exclusive Technology</p>
+          <h3 className="text-2xl md:text-3xl font-bold">Premium Quality Guaranteed</h3>
+        </div>
+      </div>
+    </motion.section>
+
+    <section className="relative bg-gradient-to-br from-background via-secondary/20 to-background pt-12 pb-24 md:pt-16 md:pb-32 overflow-hidden">
       <div className="container mx-auto px-4 relative z-10">
         <motion.div 
           className="max-w-4xl mx-auto text-center space-y-10"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
         >
           <motion.div 
             className="inline-block px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-4"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2 }}
+            transition={{ delay: 0.4 }}
           >
             <span className="text-sm font-medium text-primary">Premium Tech Essentials</span>
           </motion.div>
@@ -28,7 +53,7 @@ export function HeroSection() {
             className="text-4xl xs:text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[1.1]"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
+            transition={{ delay: 0.5 }}
           >
             <span className="text-primary block mb-1 md:mb-2">Elevate Your</span>
             <span className="bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent block">Lifestyle</span>
@@ -37,7 +62,7 @@ export function HeroSection() {
             className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
+            transition={{ delay: 0.7 }}
           >
             Discover the perfect blend of style and technology. Premium smart watches and audio devices designed for the modern individual.
           </motion.p>
@@ -45,7 +70,7 @@ export function HeroSection() {
             className="flex flex-col sm:flex-row gap-4 justify-center pt-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7 }}
+            transition={{ delay: 0.9 }}
           >
             <Link
               href="/products"
@@ -67,7 +92,7 @@ export function HeroSection() {
             className="flex flex-wrap items-center justify-center gap-6 pt-8"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.9 }}
+            transition={{ delay: 1.1 }}
           >
             <div className="flex items-center gap-2 text-muted-foreground/60">
               <Truck className="w-4 h-4" />
@@ -91,32 +116,6 @@ export function HeroSection() {
       <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-gradient-to-br from-primary/5 to-transparent rounded-full blur-3xl -z-0 pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-gradient-to-tl from-primary/5 to-transparent rounded-full blur-3xl -z-0 pointer-events-none" />
     </section>
-
-    {/* Modern Banner Image - Content Centered & Capped */}
-    <motion.section
-      className="w-full px-4 sm:px-6 lg:px-8 -mt-2 pb-12 md:pb-20 bg-background"
-      initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 1.1, duration: 0.8 }}
-    >
-      <div className="relative w-full max-w-7xl mx-auto rounded-2xl md:rounded-[2.5rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-border/40 bg-muted/20 group aspect-[16/8] sm:aspect-[21/9] lg:aspect-[21/7] xl:h-[500px] 2xl:h-[600px] xl:aspect-none">
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/10 z-10 pointer-events-none transition-all duration-700 group-hover:from-black/50" />
-        <Image
-          src="/j tech mart.jpg.jpeg"
-          alt="J Tech Mart Banner Image"
-          fill
-          priority
-          className="object-cover object-center group-hover:scale-[1.05] transition-transform duration-[2000ms] ease-out z-0"
-          sizes="(max-width: 1280px) 100vw, 1280px"
-        />
-        
-        {/* Optional: Subtle Overlay Text for premium feel */}
-        <div className="absolute inset-0 z-20 flex flex-col justify-end p-8 md:p-12 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-t from-black/60 via-transparent to-transparent">
-          <p className="text-sm font-medium tracking-widest uppercase mb-2">Exclusive Technology</p>
-          <h3 className="text-2xl md:text-3xl font-bold">Premium Quality Guaranteed</h3>
-        </div>
-      </div>
-    </motion.section>
     </>
   )
 }
