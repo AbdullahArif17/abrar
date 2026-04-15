@@ -8,21 +8,21 @@ import { Shield, Truck, RefreshCw } from 'lucide-react'
 export function HeroSection() {
   return (
     <>
-    {/* Modern Banner Image - Truly Full Width Edge-to-Edge */}
+    {/* Modern Banner Image - 1600x900 Aspect Ratio with Rounded Corners */}
     <motion.section
-      className="w-full bg-background"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+      className="w-full bg-background px-4 md:px-6 lg:px-8 pt-4 pb-8"
+      initial={{ opacity: 0, scale: 0.98 }}
+      animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.8 }}
     >
-      <div className="relative w-full overflow-hidden shadow-2xl border-b border-border/40 bg-muted/20 group aspect-[16/8] sm:aspect-[21/9] lg:aspect-[21/7] xl:h-[550px] 2xl:h-[650px] xl:aspect-none">
+      <div className="relative w-full max-w-[1600px] mx-auto overflow-hidden shadow-2xl rounded-[1.5rem] md:rounded-[2.5rem] border border-border/40 bg-muted/20 group aspect-video">
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/10 z-10 pointer-events-none transition-all duration-700 group-hover:from-black/50" />
         <Image
           src="/j tech mart.jpg.jpeg"
           alt="J Tech Mart Banner Image"
           fill
           priority
-          className="object-fit object-center group-hover:scale-[1.05] transition-transform duration-[2000ms] ease-out z-0"
+          className="object-cover object-center group-hover:scale-[1.05] transition-transform duration-[2000ms] ease-out z-0"
           sizes="(max-width: 1280px) 100vw, 1280px"
         />
         
