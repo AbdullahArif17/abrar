@@ -19,7 +19,7 @@ export function FeaturedProductsCarousel({ products }: FeaturedProductsCarouselP
   useEffect(() => {
     const updateVisibleCount = () => {
       if (typeof window === 'undefined') return
-      if (window.innerWidth < 768) setVisibleCount(1)
+      if (window.innerWidth < 640) setVisibleCount(2)
       else if (window.innerWidth < 1024) setVisibleCount(2)
       else setVisibleCount(3)
     }
@@ -83,7 +83,7 @@ export function FeaturedProductsCarousel({ products }: FeaturedProductsCarouselP
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.4, ease: 'easeOut' }}
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-10">
             {visibleProducts.map((product) => (
               <ProductCard key={product._id || product.id} product={product} />
             ))}

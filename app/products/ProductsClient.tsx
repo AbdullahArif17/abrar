@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useState, useMemo, useEffect, Suspense } from 'react';
 import { ProductCard } from '@/components/ProductCard';
 import { ProductCardSkeleton } from '@/components/ProductCardSkeleton';
 import { Product } from '@/lib/products';
@@ -12,17 +13,155 @@ interface ProductsClientProps {
   products: Product[];
 }
 
-export default function ProductsClient({ products }: ProductsClientProps) {
-  const [activeCategory, setActiveCategory] = useState<string>('all');
+interface FilterPanelProps {
+  isMobile?: boolean;
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+  activeCategory: string;
+  setActiveCategory: (category: string) => void;
+  categories: { id: string; label: string }[];
+  setIsMobileFilterOpen: (open: boolean) => void;
+  sortBy: string;
+  setSortBy: (sort: string) => void;
+}
+
+const FilterPanel = ({ 
+  isMobile = false, 
+  searchQuery, 
+  setSearchQuery, 
+  activeCategory, 
+  setActiveCategory, 
+  categories,
+  setIsMobileFilterOpen,
+  sortBy,
+  setSortBy
+}: FilterPanelProps) => (
+  <div className={cn("space-y-12", isMobile && "space-y-8")}>
+    {/* Sort - Mobile Only */}
+    {isMobile && (
+      <div className="space-y-4">
+        <div className="flex items-center gap-2 px-2">
+          <div className="h-4 w-4 rounded-full border border-primary flex items-center justify-center">
+            <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+          </div>
+          <h4 className="text-[10px] font-black text-primary/40 uppercase tracking-[0.4em]">Sort By</h4>
+        </div>
+        <div className="grid grid-cols-1 gap-2">
+          {[
+            { id: 'featured', label: 'Featured', icon: '👑' },
+            { id: 'newest', label: 'New Arrivals', icon: '✨' },
+            { id: 'price-asc', label: 'Low to High', icon: '📉' },
+            { id: 'price-desc', label: 'High to Low', icon: '📈' },
+          ].map((option) => (
+            <button
+              key={option.id}
+              onClick={() => setSortBy(option.id)}
+              className={cn(
+                "flex items-center justify-between px-6 py-4 rounded-2xl text-xs font-black uppercase tracking-widest transition-all border",
+                sortBy === option.id
+                  ? "bg-primary/10 text-primary border-primary"
+                  : "bg-card text-muted-foreground border-border"
+              )}
+            >
+              <span>{option.label}</span>
+              <span className="text-sm">{option.icon}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {/* Search - Ultra Sharp */}
+    <div className="space-y-4">
+      <div className="flex items-center gap-2 px-2">
+        <Search className="w-4 h-4 text-primary" />
+        <h4 className="text-[10px] font-black text-primary/40 uppercase tracking-[0.4em]">Search</h4>
+      </div>
+      <div className="relative group overflow-hidden rounded-[1.5rem] border border-border shadow-xl hover:border-primary/50 transition-all duration-300">
+        <input
+          type="text"
+          placeholder="Search products..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full pl-6 pr-6 py-5 bg-card text-sm focus:outline-none placeholder:text-muted-foreground/30 font-bold"
+        />
+        <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-primary group-focus-within:w-full transition-all duration-700" />
+      </div>
+    </div>
+
+    {/* Categories */}
+    <div className="space-y-6">
+       <div className="flex items-center gap-2 px-2">
+        <SlidersHorizontal className="w-4 h-4 text-primary" />
+        <h4 className="text-[10px] font-black text-primary/40 uppercase tracking-[0.4em]">Categories</h4>
+      </div>
+      <div className="flex flex-col gap-3">
+        {categories.map((category) => (
+          <button
+            key={category.id}
+            onClick={() => {
+              setActiveCategory(category.id);
+              if (isMobile) setIsMobileFilterOpen(false);
+            }}
+            className={cn(
+                "group flex items-center justify-between px-6 py-4 rounded-2xl text-xs font-black uppercase tracking-widest transition-all relative border overflow-hidden",
+                activeCategory === category.id
+                ? "bg-primary text-primary-foreground border-primary shadow-2xl shadow-primary/20 scale-[1.03] z-10"
+                : "bg-card text-muted-foreground border-border hover:border-primary/30 hover:text-primary"
+            )}
+          >
+            <span className="relative z-10">{category.label}</span>
+            <ChevronRight className={cn(
+              "w-4 h-4 transition-all duration-500 relative z-10",
+              activeCategory === category.id ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"
+            )} />
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
+function ProductsContent({ products }: ProductsClientProps) {
+  const searchParams = useSearchParams();
+  const categoryParam = searchParams.get('category');
+  
+  const [activeCategory, setActiveCategory] = useState<string>(categoryParam || 'all');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [sortBy, setSortBy] = useState<string>('featured');
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+
+  // Sync with search params when they change
+  useEffect(() => {
+    const cp = searchParams.get('category');
+    if (cp) {
+      setActiveCategory(cp);
+      // Auto-scroll to products when category is selected from URL
+      setTimeout(() => {
+        const element = document.getElementById('product-grid');
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+    } else if (!categoryParam) {
+      setActiveCategory('all');
+    }
+  }, [searchParams, categoryParam]);
   
   const categories = useMemo(() => {
-    const uniqueCategories = [...new Set(products.map(p => p.category).filter(Boolean))];
+    // Map of slug -> title to ensure unique categories based on slugs
+    const catMap = new Map<string, string>();
+    products.forEach(p => {
+      const slug = p.categorySlug || (p.category ? p.category.toLowerCase().replace(/\s+/g, '-') : null);
+      const title = p.category;
+      if (slug && title) {
+        catMap.set(slug, title);
+      }
+    });
+
     return [
       { id: 'all', label: 'All Products' },
-      ...uniqueCategories.map(cat => ({ id: cat, label: cat })),
+      ...Array.from(catMap.entries()).map(([slug, title]) => ({ id: slug, label: title })),
     ];
   }, [products]);
 
@@ -30,9 +169,8 @@ export default function ProductsClient({ products }: ProductsClientProps) {
     let filtered = activeCategory === 'all' 
       ? products 
       : products.filter(product => {
-          const pCat = (product.category || '').toLowerCase().replace(/-/g, ' ');
-          const fCat = activeCategory.toLowerCase().replace(/-/g, ' ');
-          return pCat.includes(fCat) || fCat.includes(pCat);
+          const slug = product.categorySlug || (product.category ? product.category.toLowerCase().replace(/\s+/g, '-') : '');
+          return slug === activeCategory;
       });
 
     if (searchQuery.trim()) {
@@ -59,58 +197,7 @@ export default function ProductsClient({ products }: ProductsClientProps) {
     });
   }, [products, activeCategory, searchQuery, sortBy]);
 
-  const FilterPanel = ({ isMobile = false }: { isMobile?: boolean }) => (
-    <div className={cn("space-y-12", isMobile && "space-y-8")}>
-      {/* Search - Ultra Sharp */}
-      <div className="space-y-4">
-        <div className="flex items-center gap-2 px-2">
-          <Search className="w-4 h-4 text-primary" />
-          <h4 className="text-[10px] font-black text-primary/40 uppercase tracking-[0.4em]">Search</h4>
-        </div>
-        <div className="relative group overflow-hidden rounded-[1.5rem] border border-border shadow-xl hover:border-primary/50 transition-all duration-300">
-          <input
-            type="text"
-            placeholder="Search products..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-6 pr-6 py-5 bg-card text-sm focus:outline-none placeholder:text-muted-foreground/30 font-bold"
-          />
-          <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-primary group-focus-within:w-full transition-all duration-700" />
-        </div>
-      </div>
 
-      {/* Categories */}
-      <div className="space-y-6">
-         <div className="flex items-center gap-2 px-2">
-          <SlidersHorizontal className="w-4 h-4 text-primary" />
-          <h4 className="text-[10px] font-black text-primary/40 uppercase tracking-[0.4em]">Categories</h4>
-        </div>
-        <div className="flex flex-col gap-3">
-          {categories.map((category) => (
-            <button
-              key={category.id}
-              onClick={() => {
-                setActiveCategory(category.id);
-                if (isMobile) setIsMobileFilterOpen(false);
-              }}
-              className={cn(
-                  "group flex items-center justify-between px-6 py-4 rounded-2xl text-xs font-black uppercase tracking-widest transition-all relative border overflow-hidden",
-                  activeCategory === category.id
-                  ? "bg-primary text-primary-foreground border-primary shadow-2xl shadow-primary/20 scale-[1.03] z-10"
-                  : "bg-card text-muted-foreground border-border hover:border-primary/30 hover:text-primary"
-              )}
-            >
-              <span className="relative z-10">{category.label}</span>
-              <ChevronRight className={cn(
-                "w-4 h-4 transition-all duration-500 relative z-10",
-                activeCategory === category.id ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"
-              )} />
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
 
   return (
     <div className="min-h-screen bg-background transition-colors duration-500">
@@ -173,25 +260,23 @@ export default function ProductsClient({ products }: ProductsClientProps) {
            <p className="text-[10px] font-black text-primary/40 uppercase tracking-[0.1em]">
             {filteredProducts.length} Products
           </p>
-          <div className="h-4 w-[1px] bg-border" />
-          <select 
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            className="bg-transparent text-foreground text-[10px] font-black uppercase tracking-tight py-2 pr-6 focus:outline-none cursor-pointer appearance-none text-right"
-          >
-            <option value="featured">Featured</option>
-            <option value="newest">New</option>
-            <option value="price-asc">Price: Low</option>
-            <option value="price-desc">Price: High</option>
-          </select>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-12 md:py-32">
+      <div id="product-grid" className="container mx-auto px-4 py-12 md:py-32">
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-start">
           {/* Desktop Control Panel */}
           <aside className="hidden lg:block w-80 flex-shrink-0">
-            <FilterPanel />
+            <FilterPanel 
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              activeCategory={activeCategory}
+              setActiveCategory={setActiveCategory}
+              categories={categories}
+              setIsMobileFilterOpen={setIsMobileFilterOpen}
+              sortBy={sortBy}
+              setSortBy={setSortBy}
+            />
           </aside>
 
           {/* Visualization Grid (Main Content) */}
@@ -231,8 +316,9 @@ export default function ProductsClient({ products }: ProductsClientProps) {
             <AnimatePresence mode="popLayout">
               {filteredProducts.length > 0 ? (
                 <motion.div 
+                  key="products-grid"
                   layout
-                  className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-14"
+                  className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 md:gap-14"
                 >
                   {filteredProducts.map((product) => (
                     <ProductCard key={product._id || product.id} product={product} />
@@ -304,7 +390,17 @@ export default function ProductsClient({ products }: ProductsClientProps) {
                 </button>
               </div>
               
-              <FilterPanel isMobile />
+              <FilterPanel 
+                isMobile 
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                activeCategory={activeCategory}
+                setActiveCategory={setActiveCategory}
+                categories={categories}
+                setIsMobileFilterOpen={setIsMobileFilterOpen}
+                sortBy={sortBy}
+                setSortBy={setSortBy}
+              />
 
               <div className="mt-12 sticky bottom-0 bg-background pt-4 pb-2">
                 <button 
@@ -319,5 +415,13 @@ export default function ProductsClient({ products }: ProductsClientProps) {
         )}
       </AnimatePresence>
     </div>
+  );
+}
+
+export default function ProductsClient(props: ProductsClientProps) {
+  return (
+    <Suspense fallback={<div>Loading Products...</div>}>
+      <ProductsContent {...props} />
+    </Suspense>
   );
 }

@@ -4,8 +4,10 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Shield, Truck, RefreshCw } from 'lucide-react'
+import { Category } from '@/lib/products'
+import { urlFor } from '@/lib/sanity'
 
-export function HeroSection() {
+export function HeroSection({ categories = [] }: { categories?: Category[] }) {
   return (
     <>
     {/* Modern Banner Image - 1600x900 Aspect Ratio with Rounded Corners */}
@@ -29,6 +31,39 @@ export function HeroSection() {
         <div className="absolute inset-0 z-20 flex flex-col justify-end p-8 md:p-12 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-t from-black/60 via-transparent to-transparent">
           <p className="text-sm font-medium tracking-widest uppercase mb-2">Exclusive Technology</p>
           <h3 className="text-2xl md:text-3xl font-bold">Premium Quality Guaranteed</h3>
+        </div>
+      </div>
+    </motion.section>
+    
+    {/* Category Quick Links Section */}
+    <motion.section 
+      className="w-full bg-background pt-4 pb-8"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: 0.3 }}
+    >
+      <div className="container mx-auto px-4">
+        <div className="flex flex-wrap justify-center gap-x-6 gap-y-8 md:gap-x-12">
+          {categories.map((category) => (
+            <Link 
+              key={category._id} 
+              href={`/products?category=${category.slug}`} 
+              className="group flex flex-col items-center gap-3 transition-all duration-300"
+            >
+              <div className="relative w-20 h-20 xs:w-24 xs:h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-2 border-border/40 group-hover:border-primary transition-colors shadow-md group-hover:shadow-xl group-active:scale-95 bg-white dark:bg-zinc-900">
+                <Image
+                  src={category.image ? urlFor(category.image).url() : '/placeholder.jpg'}
+                  alt={category.title}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-primary/5 group-hover:bg-transparent transition-colors" />
+              </div>
+              <span className="text-xs md:text-sm font-bold text-center text-foreground uppercase tracking-tight group-hover:text-primary transition-colors dark:text-zinc-400 dark:group-hover:text-white">
+                {category.title}
+              </span>
+            </Link>
+          ))}
         </div>
       </div>
     </motion.section>
@@ -79,12 +114,7 @@ export function HeroSection() {
               Shop Collection
               <span className="inline-block group-hover:translate-x-1 transition-transform">→</span>
             </Link>
-            <Link
-              href="/about"
-              className="px-8 py-4 rounded-xl font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/10 transition-all active:scale-95"
-            >
-              Our Story
-            </Link>
+
           </motion.div>
 
           {/* Trust Badges - inline */}

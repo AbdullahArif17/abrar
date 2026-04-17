@@ -47,6 +47,16 @@ export interface Product {
   name?: string;
 }
 
+export interface Category {
+  _id: string;
+  title: string;
+  slug: string;
+  description?: string;
+  image?: any;
+  sortOrder?: number;
+}
+
+
 // Dummy/fallback products (only used when Sanity is empty)
 export const products: Product[] = [
   {

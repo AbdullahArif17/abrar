@@ -39,13 +39,13 @@ export function ProductCard({ product }: ProductCardProps) {
   
   return (
     <motion.div 
-      className="group relative bg-card border border-border rounded-[2.5rem] overflow-hidden hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 flex flex-col h-full dark:hover:border-primary/30"
+      className="group relative bg-card border border-border rounded-3xl md:rounded-[2.5rem] overflow-hidden hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 flex flex-col h-full dark:hover:border-primary/30"
       initial={{ opacity: 0, scale: 0.95 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
       whileHover={{ y: -8 }}
     >
-      <Link href={`/products/${product.slug}`} className="block relative aspect-square overflow-hidden rounded-t-[2.5rem] flex-shrink-0">
+      <Link href={`/products/${product.slug}`} className="block relative aspect-square overflow-hidden rounded-t-3xl md:rounded-t-[2.5rem] flex-shrink-0">
         <Image
           src={imageUrl}
           alt={product.title || product.name || 'Product'}
@@ -77,7 +77,7 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
       </Link>
       
-      <div className="p-6 md:p-8 flex flex-col flex-1">
+      <div className="p-4 md:p-8 flex flex-col flex-1">
         <div className="flex flex-col gap-3 mb-6">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/40">
@@ -89,8 +89,8 @@ export function ProductCard({ product }: ProductCardProps) {
             </div>
           </div>
           
-          <Link href={`/products/${product.slug}`} className="min-h-[3.5rem] flex items-center">
-            <h3 className="font-extrabold text-lg md:text-2xl text-foreground tracking-tight group-hover:text-primary transition-colors duration-300 line-clamp-2 leading-tight">
+          <Link href={`/products/${product.slug}`} className="min-h-[2.5rem] md:min-h-[3.5rem] flex items-center">
+            <h3 className="font-extrabold text-sm md:text-2xl text-foreground tracking-tight group-hover:text-primary transition-colors duration-300 line-clamp-2 leading-tight">
               {product.title || product.name}
             </h3>
           </Link>
@@ -116,19 +116,19 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
 
         {/* Price & Action Section */}
-        <div className="mt-auto pt-6 border-t border-border/60 flex flex-col gap-5">
+        <div className="mt-auto pt-4 md:pt-6 border-t border-border/60 flex flex-col gap-3 md:gap-5">
           <div className="flex items-baseline gap-2">
             {product.discountPrice ? (
               <>
-                <span className="font-black text-2xl md:text-3xl text-primary tracking-tighter">
+                <span className="font-black text-lg md:text-3xl text-primary tracking-tighter">
                   Rs. {formatPrice(product.discountPrice)}
                 </span>
-                <span className="text-sm text-muted-foreground/40 line-through font-bold">
+                <span className="text-[10px] md:text-sm text-muted-foreground/40 line-through font-bold">
                   Rs. {formatPrice(product.price)}
                 </span>
               </>
             ) : (
-              <span className="font-black text-2xl md:text-3xl text-primary tracking-tighter">
+              <span className="font-black text-lg md:text-3xl text-primary tracking-tighter">
                 Rs. {formatPrice(product.price)}
               </span>
             )}
@@ -136,14 +136,14 @@ export function ProductCard({ product }: ProductCardProps) {
 
           <Link
             href={`/products/${product.slug}`}
-            className="group/btn relative w-full overflow-hidden bg-primary text-primary-foreground py-4 px-6 rounded-2xl text-[11px] font-black uppercase tracking-[0.15em] transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 active:scale-[0.97] dark:bg-white dark:text-black dark:hover:bg-gray-100 flex items-center justify-center gap-2"
+            className="group/btn relative w-full overflow-hidden bg-primary text-primary-foreground py-2.5 md:py-4 px-4 md:px-6 rounded-xl md:rounded-2xl text-[9px] md:text-[11px] font-black uppercase tracking-[0.15em] transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 active:scale-[0.97] dark:bg-white dark:text-black dark:hover:bg-gray-100 flex items-center justify-center gap-2"
           >
             <div className="absolute inset-0 w-1/4 h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:translate-x-[400%] transition-transform duration-1000 ease-in-out" />
-            <ShoppingBag className="w-4 h-4 group-hover/btn:scale-110 transition-transform duration-300" />
+            <ShoppingBag className="w-3.5 h-3.5 md:w-4 md:h-4 group-hover/btn:scale-110 transition-transform duration-300" />
             <span className="relative">
-              {product.stockStatus === 'out_of_stock' ? 'Notify Me' : (product.discountPrice ? 'Shop Now' : 'View Product')}
+              {product.stockStatus === 'out_of_stock' ? 'Notify' : (product.discountPrice ? 'Shop' : 'View')}
             </span>
-            <ArrowRight className="w-4 h-4 opacity-0 -translate-x-3 group-hover/btn:opacity-100 group-hover/btn:translate-x-0 transition-all duration-500" />
+            <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4 opacity-0 -translate-x-3 group-hover/btn:opacity-100 group-hover/btn:translate-x-0 transition-all duration-500" />
           </Link>
         </div>
       </div>

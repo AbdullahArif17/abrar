@@ -52,5 +52,13 @@ export const category = defineType({
       initialValue: 0,
       description: 'Lower numbers appear first.',
     }),
+    defineField({
+      name: 'showInHero',
+      title: 'Show in Hero Section',
+      type: 'boolean',
+      initialValue: false,
+      description: 'If enabled, this category will appear as a circular icon on the homepage hero section.',
+    }),
   ],
 });
+

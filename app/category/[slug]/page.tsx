@@ -10,8 +10,8 @@ interface Props {
 }
 
 async function getProductsByCategory(slug: string) {
-  // Category is stored as a string value (e.g., 'smart-watches', 'earbuds')
-  const query = `*[_type == "product" && category == $slug] | order(_createdAt desc) {
+  // Category is a reference in Sanity, so we check against the referenced slug
+  const query = `*[_type == "product" && category->slug.current == $slug] | order(_createdAt desc) {
     _id,
     name,
     title,

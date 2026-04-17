@@ -85,21 +85,29 @@ const productProjection = `{
 }`;
 
 // GROQ Queries
-export const productsQuery = `*[_type == "product" && isActive != false] | order(sortOrder asc, _createdAt desc) ${productProjection}`;
+export const productsQuery = `*[_type == "product" && isActive != false] | order(coalesce(sortOrder, 0) asc, _createdAt desc) ${productProjection}`;
 
-export const featuredProductsQuery = `*[_type == "product" && featured == true && isActive != false] | order(sortOrder asc, _createdAt desc) ${productProjection}`;
+export const featuredProductsQuery = `*[_type == "product" && featured == true && isActive != false] | order(coalesce(sortOrder, 0) asc, _createdAt desc) ${productProjection}`;
 
 export const productBySlugQuery = `*[_type == "product" && (slug.current == $slug || _id == $slug)][0] ${productProjection}`;
 
-export const productsByCategoryQuery = `*[_type == "product" && category->slug.current == $categorySlug && isActive != false] | order(sortOrder asc, _createdAt desc) ${productProjection}`;
+export const productsByCategoryQuery = `*[_type == "product" && category->slug.current == $categorySlug && isActive != false] | order(coalesce(sortOrder, 0) asc, _createdAt desc) ${productProjection}`;
 
-export const categoriesQuery = `*[_type == "category"] | order(sortOrder asc) {
+export const categoriesQuery = `*[_type == "category"] | order(coalesce(sortOrder, 0) asc) {
   _id,
   title,
   "slug": slug.current,
   description,
   image,
-  sortOrder
+  sortOrder,
+  showInHero
+}`;
+
+export const heroCategoriesQuery = `*[_type == "category" && showInHero == true] | order(coalesce(sortOrder, 0) asc) {
+  _id,
+  title,
+  "slug": slug.current,
+  image
 }`;
 
 // Fetch Functions
@@ -162,4 +170,17 @@ export async function getCategories() {
     return [];
   }
 }
+
+export async function getHeroCategories() {
+  try {
+    const categories = await client.fetch(heroCategoriesQuery, {}, {
+      next: { revalidate: 60 },
+    });
+    return categories || [];
+  } catch (error) {
+    console.error('Error fetching hero categories:', error);
+    return [];
+  }
+}
+
 

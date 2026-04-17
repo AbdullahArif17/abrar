@@ -1,5 +1,5 @@
-import { getFeaturedProducts, getProducts } from '@/lib/sanity';
-import { Product } from '@/lib/products';
+import { getFeaturedProducts, getProducts, getCategories, getHeroCategories } from '@/lib/sanity';
+import { Product, Category } from '@/lib/products';
 import { HeroSection } from '@/components/HeroSection';
 import { FeaturedSection } from '@/components/FeaturedSection';
 import { BenefitsSection } from '@/components/BenefitsSection';
@@ -7,6 +7,7 @@ import { NewsletterSection } from '@/components/NewsletterSection';
 
 export default async function Home() {
   let featuredProducts: Product[] = await getFeaturedProducts();
+  const categories: Category[] = await getHeroCategories();
   
   // If no featured products, show first 3 products instead
   if (featuredProducts.length === 0) {
@@ -16,7 +17,7 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col">
-      <HeroSection />
+      <HeroSection categories={categories} />
       <FeaturedSection products={featuredProducts} />
       <BenefitsSection />
       <NewsletterSection />

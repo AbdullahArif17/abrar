@@ -12,9 +12,9 @@ interface FeaturedSectionProps {
 
 export function FeaturedSection({ products }: FeaturedSectionProps) {
   return (
-    <section className="py-28 bg-background">
+    <section className="py-16 md:py-28 bg-background">
       <div className="container mx-auto px-4 md:px-6 lg:px-8">
-        <div className="flex justify-between items-end mb-20">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 md:mb-20 gap-6">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -24,8 +24,8 @@ export function FeaturedSection({ products }: FeaturedSectionProps) {
             <div className="inline-block px-4 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 mb-4">
               <span className="text-xs font-semibold text-orange-500 uppercase tracking-wider">🔥 Trending Now</span>
             </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-primary mb-4">BESTSELLER FOR YOU 🔥</h2>
-            <p className="text-muted-foreground text-lg md:text-xl">Our most loved products, handpicked for you.</p>
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-primary mb-4">BESTSELLER FOR YOU 🔥</h2>
+            <p className="text-muted-foreground text-sm md:text-xl">Our most loved products, handpicked for you.</p>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, x: 20 }}
