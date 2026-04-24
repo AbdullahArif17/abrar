@@ -95,13 +95,13 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 {product.brand && (
                   <span className="text-xs font-bold uppercase tracking-widest text-primary/60">{product.brand}</span>
                 )}
-                <span className="text-xs font-semibold text-muted-foreground/50 uppercase tracking-widest px-2 py-0.5 bg-secondary rounded-full">
+                <span className="text-[10px] sm:text-xs font-semibold text-muted-foreground/50 uppercase tracking-widest px-2 py-0.5 bg-secondary rounded-full">
                   {product.category?.replace('-', ' ') || 'Uncategorized'}
                 </span>
                 {product.productTags?.map((tag: string) => (
                   <span
                     key={tag}
-                    className={`px-2.5 py-0.5 text-[11px] font-bold rounded-full ${
+                    className={`px-2 sm:px-2.5 py-0.5 text-[9px] sm:text-[11px] font-bold rounded-full ${
                       tag === 'bestseller' ? 'bg-orange-500 text-white' :
                       tag === 'new' ? 'bg-green-500 text-white' :
                       tag === 'limited' ? 'bg-red-500 text-white' :

@@ -25,7 +25,7 @@ export function ProductTag({ type, className }: ProductTagProps) {
   return (
     <span 
       className={cn(
-        'inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide shadow-md',
+        'inline-flex items-center gap-1 px-1.5 md:px-2.5 py-0.5 md:py-1 rounded-full text-[8px] md:text-[10px] font-bold uppercase tracking-wide shadow-md',
         tagStyles[type],
         className
       )}

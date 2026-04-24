@@ -60,16 +60,16 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
         {/* Tags */}
-        <div className="absolute top-4 left-4 right-4 flex flex-wrap gap-2 z-10">
+        <div className="absolute top-2 left-2 md:top-4 md:left-4 right-2 md:right-4 flex flex-wrap gap-1 md:gap-2 z-10">
           {product.discountPrice && (
-            <span className="bg-rose-600 text-white px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-tighter shadow-xl border border-white/20">
+            <span className="bg-rose-600 text-white px-2 py-0.5 md:px-3 md:py-1.5 rounded-full text-[7px] md:text-[10px] font-black uppercase tracking-tighter shadow-xl border border-white/20">
               {Math.round(((product.price - product.discountPrice) / product.price) * 100)}% OFF
             </span>
           )}
           {product.productTags?.slice(0, 1).map((tag) => (
             <span 
               key={tag}
-              className={`px-3 py-1.5 rounded-full text-[10px] font-black uppercase shadow-xl border border-white/10 ${tagStyles[tag] || 'bg-primary/90 text-white backdrop-blur-md'}`}
+              className={`px-2 py-0.5 md:px-3 md:py-1.5 rounded-full text-[7px] md:text-[10px] font-black uppercase shadow-xl border border-white/10 ${tagStyles[tag] || 'bg-primary/90 text-white backdrop-blur-md'}`}
             >
               {tagLabels[tag] || tag}
             </span>
@@ -79,13 +79,13 @@ export function ProductCard({ product }: ProductCardProps) {
       
       <div className="p-4 md:p-8 flex flex-col flex-1">
         <div className="flex flex-col gap-3 mb-6">
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/40">
+          <div className="flex items-center justify-between gap-1">
+            <span className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em] text-primary/40 truncate">
               {product.brand || product.category?.replace('-', ' ') || 'Shop'}
             </span>
-            <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full ${stock.color} border border-current/20 backdrop-blur-sm`}>
-              <stock.icon className="w-2.5 h-2.5" />
-              <span className="text-[9px] font-black uppercase tracking-[0.1em]">{stock.text}</span>
+            <div className={`flex items-center gap-1 md:gap-1.5 px-1.5 md:px-2.5 py-0.5 md:py-1 rounded-full ${stock.color} border border-current/20 backdrop-blur-sm shrink-0`}>
+              <stock.icon className="w-2 h-2 md:w-2.5 md:h-2.5" />
+              <span className="text-[7px] md:text-[9px] font-black uppercase tracking-[0.1em]">{stock.text}</span>
             </div>
           </div>
           
